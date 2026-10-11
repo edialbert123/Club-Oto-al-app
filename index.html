@@ -420,12 +420,14 @@
 
     <script>
         let listaVersiculos = [];
+        let tiempoUltimoAtras = 0;
 
         // Función para pasar de la Bienvenida al Menú Principal
         function ingresarAlMenu() {
             document.getElementById('pantallaBienvenida').style.display = 'none';
             document.getElementById('vistaPrincipal').style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            history.pushState({ vista: 'menu' }, '');
         }
 
         async function cargarTexto(nombreArchivo) {
@@ -437,6 +439,7 @@
             caja.style.display = 'block';
             btnVolver.style.display = 'block';
             caja.innerHTML = "Cargando información...";
+            history.pushState({ vista: 'seccion' }, '');
 
             try {
                 const respuesta = await fetch(`textos/${nombreArchivo}`);
@@ -456,6 +459,7 @@
             menu.style.display = 'none';
             caja.style.display = 'block';
             btnVolver.style.display = 'block';
+            history.pushState({ vista: 'seccion' }, '');
 
             if (listaVersiculos.length === 0) {
                 caja.innerText = "Cargando palabra de aliento...";
@@ -511,6 +515,7 @@
             menu.style.display = 'none';
             caja.style.display = 'block';
             btnVolver.style.display = 'block';
+            history.pushState({ vista: 'seccion' }, '');
 
             let tituloSeccion = "";
             let htmlContenido = `<div class="media-grid">`;
@@ -594,6 +599,27 @@
             btnVolver.style.display = 'none';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
+        // CONTROL DEL BOTÓN ATRÁS DEL TELÉFONO
+        window.addEventListener('popstate', function (event) {
+            const cajaResultado = document.getElementById('resultado');
+            const vistaPrincipal = document.getElementById('vistaPrincipal');
+
+            if (cajaResultado && cajaResultado.style.display === 'block') {
+                mostrarMenuPrincipal();
+                history.pushState({ vista: 'menu' }, '');
+            } else if (vistaPrincipal && vistaPrincipal.style.display === 'block') {
+                const ahora = new Date().getTime();
+                if (ahora - tiempoUltimoAtras < 2000) {
+                    // Si presiona de nuevo en menos de 2 segundos, deja salir
+                    history.back();
+                } else {
+                    tiempoUltimoAtras = ahora;
+                    history.pushState({ vista: 'menu' }, '');
+                    alert("Presiona de nuevo 'Atrás' para salir de la aplicación.");
+                }
+            }
+        });
     </script>
 
     <script>
