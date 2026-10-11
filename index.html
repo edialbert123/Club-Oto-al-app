@@ -7,13 +7,13 @@
     <link rel="manifest" href="manifest.json">
     
     <style>
-    /* Ocultar insignia y marcos flotantes */
-    iframe[src*="netlify"], div[class*="netlify-badge"], a[href*="netlify.com"] {
-        display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
-        pointer-events: none !important;
-    }
+        /* Ocultar insignia y marcos flotantes */
+        iframe[src*="netlify"], div[class*="netlify-badge"], a[href*="netlify.com"] {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
 
         * {
             box-sizing: border-box;
@@ -42,7 +42,74 @@
             border: none;
         }
 
-        /* Banner Superior */
+        /* ----------------------------------------------------
+           1. PANTALLA DE BIENVENIDA (SPLASH SCREEN)
+        ---------------------------------------------------- */
+        .welcome-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 85vh;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .welcome-logo {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #bc6c25;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+            margin-bottom: 20px;
+        }
+
+        .welcome-title {
+            font-size: 28px;
+            color: #2c3e50;
+            margin: 10px 0 5px 0;
+            font-weight: bold;
+        }
+
+        .welcome-subtitle {
+            font-size: 16px;
+            color: #bc6c25;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .welcome-text {
+            font-size: 15px;
+            color: #555555;
+            line-height: 1.6;
+            max-width: 320px;
+            margin-bottom: 30px;
+        }
+
+        .btn-ingresar {
+            background: linear-gradient(135deg, #bc6c25, #dda15e);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            font-size: 17px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(188, 108, 37, 0.3);
+            transition: transform 0.2s, background 0.2s;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .btn-ingresar:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #a45a1d, #c68e4c);
+        }
+
+        /* ----------------------------------------------------
+           2. VISTA PRINCIPAL (BANNER Y MENÚ)
+        ---------------------------------------------------- */
         .banner-header {
             display: flex;
             align-items: center;
@@ -79,7 +146,6 @@
             object-fit: cover;
         }
 
-        /* Textos del Banner */
         .header-texts {
             position: relative;
             z-index: 2;
@@ -104,31 +170,6 @@
             text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
         }
 
-        /* Botón de Volver optimizado para abajo */
-        .back-btn {
-            background-color: #3b5998;
-            padding: 14px 18px;
-            font-size: 15px;
-            font-weight: bold;
-            border: none;
-            color: white;
-            border-radius: 10px;
-            cursor: pointer;
-            display: block;
-            transition: background-color 0.2s;
-            text-decoration: none;
-            text-align: center;
-            margin-top: 20px;
-            margin-bottom: 20px;
-            width: 100%;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-        }
-
-        .back-btn:hover {
-            background-color: #2d4373;
-        }
-
-        /* Menú en Cuadrícula de Opciones */
         .menu-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -161,7 +202,9 @@
             background: linear-gradient(135deg, #1d3557, #14213d);
         }
 
-        /* Caja de contenido general con letra más amplia y legible */
+        /* ----------------------------------------------------
+           3. VISTA DE CONTENIDO Y RESULTADOS
+        ---------------------------------------------------- */
         .content-box {
             margin-top: 10px;
             padding: 20px;
@@ -170,13 +213,36 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
             border: 1px solid #f0e6dc;
             color: #2c3e50;
-            font-size: 17px; /* Letra ampliada para mayor comodidad */
+            font-size: 17px;
             line-height: 1.6;
         }
 
         .content-box p, .content-box ul, .content-box li {
             margin-top: 8px;
             margin-bottom: 12px;
+        }
+
+        .back-btn {
+            background-color: #3b5998;
+            padding: 14px 18px;
+            font-size: 15px;
+            font-weight: bold;
+            border: none;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            display: block;
+            transition: background-color 0.2s;
+            text-decoration: none;
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            width: 100%;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
+
+        .back-btn:hover {
+            background-color: #2d4373;
         }
 
         .btn-otra-vez {
@@ -215,7 +281,6 @@
             background-color: #2980b9;
         }
 
-        /* Título interno de las secciones multimedia */
         .section-title {
             font-size: 18px;
             font-weight: bold;
@@ -272,68 +337,96 @@
 <body>
 
     <div class="container">
-        <!-- Banner Superior con foto de fondo y el logotipo circular -->
-        <div class="banner-header" style="background-image: url('multimedia/imagenes/banner.jpeg');">
-            <div class="logo-container">
-                <img src="multimedia/imagenes/banner.jpeg" alt="Club Otoñal">
+
+        <!-- ==========================================
+             0. VISTA INICIAL: PANTALLA DE BIENVENIDA
+             ========================================== -->
+        <div id="pantallaBienvenida" class="welcome-screen">
+            <img src="multimedia/imagenes/banner.jpeg" alt="Logo Club Otoñal" class="welcome-logo">
+            <h1 class="welcome-title">Bienvenido</h1>
+            <div class="welcome-subtitle">Ministerio Club Otoñal</div>
+            <p class="welcome-text">
+                Un espacio dedicado a conectar, edificar y compartir la Palabra de Dios y nuestras actividades comunitarias.
+            </p>
+            <button class="btn-ingresar" onclick="ingresarAlMenu()">Ingresar a la App ›</button>
+        </div>
+
+        <!-- ==========================================
+             1. VISTA PRINCIPAL: MENÚ DE OPCIONES (OCULTO AL INICIO)
+             ========================================== -->
+        <div id="vistaPrincipal" style="display: none;">
+            <!-- Banner Superior -->
+            <div class="banner-header" style="background-image: url('multimedia/imagenes/banner.jpeg');">
+                <div class="logo-container">
+                    <img src="multimedia/imagenes/banner.jpeg" alt="Club Otoñal">
+                </div>
+                <div class="header-texts">
+                    <h1>Club Otoñal</h1>
+                    <p>Conéctate con nuestra comunidad</p>
+                </div>
             </div>
-            <div class="header-texts">
-                <h1>Club Otoñal</h1>
-                <p>Conéctate con nuestra comunidad</p>
+
+            <!-- Menú en Cuadrícula de 9 Opciones -->
+            <div id="menuPrincipal" class="menu-grid">
+                <button class="menu-btn" onclick="cargarTexto('proxima_actividad.html')">
+                    📅 1. Próxima Actividad
+                    <span>Ver detalles ›</span>
+                </button>
+                <button class="menu-btn" onclick="cargarTexto('colaborar.html')">
+                    🤝 2. Cómo Colaborar
+                    <span>Ver detalles ›</span>
+                </button>
+                <button class="menu-btn" onclick="cargarPalabraAliento()">
+                    📖 3. Palabra Aliento
+                    <span>Leer versículo ›</span>
+                </button>
+                <button class="menu-btn" onclick="cargarTexto('contacto.html')">
+                    📞 4. Contactar Equipo
+                    <span>Ver números ›</span>
+                </button>
+                <button class="menu-btn" onclick="cargarSeccion('audios')">
+                    🎵 5. Audios / Canciones
+                    <span>Escuchar ›</span>
+                </button>
+                <button class="menu-btn" onclick="cargarSeccion('imagenes')">
+                    🖼️ 6. Galería Imágenes
+                    <span>Ver fotos ›</span>
+                </button>
+                <button class="menu-btn" onclick="cargarSeccion('videos')">
+                    🎬 7. Videos
+                    <span>Reproducir ›</span>
+                </button>
+                <button class="menu-btn" onclick="cargarSeccion('documentos')">
+                    📄 8. Documentos
+                    <span>Ver archivos ›</span>
+                </button>
+                <button class="menu-btn" onclick="cargarTexto('donativos.html')">
+                    ❤️ 9. Hacer Donativo
+                    <span>Información ›</span>
+                </button>
             </div>
         </div>
 
-        <!-- Menú en Cuadrícula de 9 Opciones -->
-        <div id="menuPrincipal" class="menu-grid">
-            <button class="menu-btn" onclick="cargarTexto('proxima_actividad.html')">
-                📅 1. Próxima Actividad
-                <span>Ver detalles ›</span>
-            </button>
-            <button class="menu-btn" onclick="cargarTexto('colaborar.html')">
-                🤝 2. Cómo Colaborar
-                <span>Ver detalles ›</span>
-            </button>
-            <button class="menu-btn" onclick="cargarPalabraAliento()">
-                📖 3. Palabra Aliento
-                <span>Leer versículo ›</span>
-            </button>
-            <button class="menu-btn" onclick="cargarTexto('contacto.html')">
-                📞 4. Contactar Equipo
-                <span>Ver números ›</span>
-            </button>
-            <button class="menu-btn" onclick="cargarSeccion('audios')">
-                🎵 5. Audios / Canciones
-                <span>Escuchar ›</span>
-            </button>
-            <button class="menu-btn" onclick="cargarSeccion('imagenes')">
-                🖼️ 6. Galería Imágenes
-                <span>Ver fotos ›</span>
-            </button>
-            <button class="menu-btn" onclick="cargarSeccion('videos')">
-                🎬 7. Videos
-                <span>Reproducir ›</span>
-            </button>
-            <button class="menu-btn" onclick="cargarSeccion('documentos')">
-                📄 8. Documentos
-                <span>Ver archivos ›</span>
-            </button>
-            <button class="menu-btn" onclick="cargarTexto('donativos.html')">
-                ❤️ 9. Hacer Donativo
-                <span>Información ›</span>
-            </button>
-        </div>
-
-        <!-- Caja de contenido general donde se despliega el texto o multimedia -->
+        <!-- ==========================================
+             2. VISTA INTERNA: CONTENIDO Y RESULTADOS
+             ========================================== -->
         <div id="resultado" class="content-box" style="display: none;">
-            <!-- Aquí se cargará la información seleccionada -->
+            <!-- Aquí se cargará el contenido seleccionado -->
         </div>
 
-        <!-- Botón de Volver colocado abajo para comodidad del usuario móvil -->
+        <!-- Botón Volver -->
         <button id="btnVolver" class="back-btn" onclick="mostrarMenuPrincipal()" style="display: none;">← Volver al Menú Principal</button>
     </div>
 
     <script>
         let listaVersiculos = [];
+
+        // Función para pasar de la Bienvenida al Menú Principal
+        function ingresarAlMenu() {
+            document.getElementById('pantallaBienvenida').style.display = 'none';
+            document.getElementById('vistaPrincipal').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
         async function cargarTexto(nombreArchivo) {
             const menu = document.getElementById('menuPrincipal');
@@ -382,17 +475,14 @@
                 return;
             }
 
-            let versiculoSeleccionado = "";
             const indiceAleatorio = Math.floor(Math.random() * listaVersiculos.length);
-            versiculoSeleccionado = `📖 <strong>PALABRA DE ALIENTO:</strong><br><br>"${listaVersiculos[indiceAleatorio]}"`;
+            const versiculoSeleccionado = `📖 <strong>PALABRA DE ALIENTO:</strong><br><br>"${listaVersiculos[indiceAleatorio]}"`;
 
             caja.innerHTML = `<div style="font-size: 18px; line-height: 1.7;">${versiculoSeleccionado}</div>
             <button class="btn-otra-vez" onclick="cargarPalabraAliento(false)">🔄 Ver otro versículo</button>`;
         }
 
-        // ==========================================
-        // LISTA DE CONTROL MULTIMEDIA
-        // ==========================================
+        // CONTROL MULTIMEDIA
         const datosMultimedia = {
             audios: [
                 { nombre: "Aceite Fresco", archivo: "Aceite Fresco _ Yahweh Video Oficial Con Letra _ New Wine (320).mp3" },
@@ -401,8 +491,8 @@
                 { nombre: "Bienvenido Espíritu Santo", archivo: "Bienvenido Espíritu Santo Miel San Marcos  Letra. (320).mp3" }                    
             ],
             imagenes: [
-                { nombre: "Club Otoñal", archivo: "banner.jpeg" },
-                { nombre: "Club Otoñal2", archivo: "Icono.jpeg" }
+                { nombre: "Reunión de Comunidad", archivo: "reunion.jpg" },
+                { nombre: "Actividad al Aire Libre", archivo: "aire_libre.jpg" }
             ],
             videos: [
                 { nombre: "Resumen del Mes", archivo: "resumen.mp4" }
