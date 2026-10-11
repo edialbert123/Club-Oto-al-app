@@ -275,6 +275,8 @@
             font-weight: bold;
             display: inline-block;
             text-align: center;
+            cursor: pointer;
+            border: none;
         }
 
         .btn-descargar:hover {
@@ -331,6 +333,54 @@
             border-radius: 6px;
             height: 140px;
             object-fit: cover;
+        }
+
+        /* Reorganizar controles de video para separar el volumen */
+        video::-webkit-media-controls-panel {
+            justify-content: space-around;
+        }
+
+        /* ----------------------------------------------------
+           4. MODAL VISOR DE IMÁGENES INTERNO
+        ---------------------------------------------------- */
+        #visorModal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        #visorModal img {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 8px;
+            object-fit: contain;
+            height: auto;
+        }
+
+        .cerrar-visor {
+            margin-top: 20px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .cerrar-visor:hover {
+            background-color: #c0392b;
         }
     </style>
 </head>
@@ -418,19 +468,40 @@
         <button id="btnVolver" class="back-btn" onclick="mostrarMenuPrincipal()" style="display: none;">← Volver al Menú Principal</button>
     </div>
 
+    <!-- VISOR DE IMÁGENES MODAL (INTERNO) -->
+    <div id="visorModal" onclick="cerrarVisorImagen()">
+        <img id="imagenAmpliada" src="" alt="Imagen Ampliada">
+        <button class="cerrar-visor" onclick="cerrarVisorImagen()">Cerrar Imagen</button>
+    </div>
+
     <script>
         let listaVersiculos = [];
         let tiempoUltimoAtras = 0;
+        let visorAbierto = false;
 
         // Función para pasar de la Bienvenida al Menú Principal
         function ingresarAlMenu() {
+            detenerTodoMultimedia();
             document.getElementById('pantallaBienvenida').style.display = 'none';
             document.getElementById('vistaPrincipal').style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
             history.pushState({ vista: 'menu' }, '');
         }
 
+        // Detener reproducción de todos los audios y videos
+        function detenerTodoMultimedia() {
+            document.querySelectorAll('audio').forEach(audio => {
+                audio.pause();
+                audio.currentTime = 0;
+            });
+            document.querySelectorAll('video').forEach(video => {
+                video.pause();
+                video.currentTime = 0;
+            });
+        }
+
         async function cargarTexto(nombreArchivo) {
+            detenerTodoMultimedia();
             const menu = document.getElementById('menuPrincipal');
             const caja = document.getElementById('resultado');
             const btnVolver = document.getElementById('btnVolver');
@@ -452,6 +523,7 @@
         }
 
         async function cargarPalabraAliento(esDelDia = false) {
+            detenerTodoMultimedia();
             const menu = document.getElementById('menuPrincipal');
             const caja = document.getElementById('resultado');
             const btnVolver = document.getElementById('btnVolver');
@@ -491,7 +563,7 @@
             audios: [
                 { nombre: "Aceite Fresco", archivo: "Aceite Fresco _ Yahweh Video Oficial Con Letra _ New Wine (320).mp3" },
                 { nombre: "Al que está sentado en el Trono", archivo: "Al que está sentado en el trono - Marcos Brunet Ft Lucas Conslie (Letras) (320).mp3" },
-                { nombre: "Ven Espíritu", archivo: "Barak Ven Espíritu Santo (Video Lyric) (320).mp3" },    
+                { nombre: "Ven Espíritu", archivo: "Barak - Ven Espíritu Santo (Video Lyric) (320).mp3" },    
                 { nombre: "Bienvenido Espíritu Santo", archivo: "Bienvenido Espíritu Santo Miel San Marcos  Letra. (320).mp3" }                    
             ],
             imagenes: [
@@ -509,6 +581,7 @@
         };
 
         function cargarSeccion(tipo) {
+            detenerTodoMultimedia();
             const menu = document.getElementById('menuPrincipal');
             const caja = document.getElementById('resultado');
             const btnVolver = document.getElementById('btnVolver');
@@ -546,10 +619,8 @@
                         htmlContenido += `
                         <div class="media-card">
                             <h4>${item.nombre}</h4>
-                            <a href="multimedia/imagenes/${item.archivo}" target="_blank">
-                                <img src="multimedia/imagenes/${item.archivo}" alt="${item.nombre}" style="cursor: pointer;">
-                            </a>
-                            <a href="multimedia/imagenes/${item.archivo}" target="_blank" class="btn-descargar">🔍 Ver Imagen Completa</a>
+                            <img src="multimedia/imagenes/${item.archivo}" alt="${item.nombre}" style="cursor: pointer;" onclick="abrirVisorImagen('multimedia/imagenes/${item.archivo}')">
+                            <button class="btn-descargar" onclick="abrirVisorImagen('multimedia/imagenes/${item.archivo}')">🔍 Ver Imagen Completa</button>
                         </div>`;
                     });
                 }
@@ -590,7 +661,26 @@
             caja.innerHTML = `<span class="section-title">${tituloSeccion}</span>` + htmlContenido;
         }
 
+        // Funciones para el Visor Interno de Imágenes
+        function abrirVisorImagen(rutaImagen) {
+            document.getElementById('imagenAmpliada').src = rutaImagen;
+            document.getElementById('visorModal').style.display = 'flex';
+            visorAbierto = true;
+            history.pushState({ vista: 'visor' }, '');
+        }
+
+        function cerrarVisorImagen() {
+            if (visorAbierto) {
+                visorAbierto = false;
+                document.getElementById('visorModal').style.display = 'none';
+                document.getElementById('imagenAmpliada').src = '';
+                // Si el usuario cerró el visor con el botón, limpiamos el estado extra del historial
+                history.back();
+            }
+        }
+
         function mostrarMenuPrincipal() {
+            detenerTodoMultimedia();
             const menu = document.getElementById('menuPrincipal');
             const caja = document.getElementById('resultado');
             const btnVolver = document.getElementById('btnVolver');
@@ -603,16 +693,26 @@
 
         // CONTROL DEL BOTÓN ATRÁS DEL TELÉFONO
         window.addEventListener('popstate', function (event) {
+            const visorModal = document.getElementById('visorModal');
             const cajaResultado = document.getElementById('resultado');
             const vistaPrincipal = document.getElementById('vistaPrincipal');
 
+            // Si el visor de imágenes estaba abierto, ciérralo y mantén la app abierta
+            if (visorModal && visorModal.style.display === 'flex') {
+                visorModal.style.display = 'none';
+                document.getElementById('imagenAmpliada').src = '';
+                visorAbierto = false;
+                history.pushState({ vista: 'seccion' }, '');
+                return;
+            }
+
+            // Si estamos viendo una sección interna o un resultado
             if (cajaResultado && cajaResultado.style.display === 'block') {
                 mostrarMenuPrincipal();
                 history.pushState({ vista: 'menu' }, '');
             } else if (vistaPrincipal && vistaPrincipal.style.display === 'block') {
                 const ahora = new Date().getTime();
                 if (ahora - tiempoUltimoAtras < 2000) {
-                    // Si presiona de nuevo en menos de 2 segundos, deja salir
                     history.back();
                 } else {
                     tiempoUltimoAtras = ahora;
