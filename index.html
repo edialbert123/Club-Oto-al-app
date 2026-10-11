@@ -450,8 +450,10 @@
                         htmlContenido += `
                         <div class="media-card">
                             <h4>${item.nombre}</h4>
-                            <img src="multimedia/imagenes/${item.archivo}" alt="${item.nombre}">
-                            <a href="multimedia/imagenes/${item.archivo}" download class="btn-descargar">📥 Descargar</a>
+                            <a href="multimedia/imagenes/${item.archivo}" target="_blank">
+                                <img src="multimedia/imagenes/${item.archivo}" alt="${item.nombre}" style="cursor: pointer;">
+                            </a>
+                            <a href="multimedia/imagenes/${item.archivo}" target="_blank" class="btn-descargar">🔍 Ver Imagen Completa</a>
                         </div>`;
                     });
                 }
