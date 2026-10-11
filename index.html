@@ -7,35 +7,40 @@
     <link rel="manifest" href="manifest.json">
     
     <style>
-  /* Ocultar insignia y marcos flotantes de Netlify */
-  iframe[src*="netlify"], div[class*="netlify-badge"], a[href*="netlify.com"] {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-  }
+    /* Ocultar insignia y marcos flotantes */
+    iframe[src*="netlify"], div[class*="netlify-badge"], a[href*="netlify.com"] {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }
 
-        /* 2. Estilos generales con ambiente cálido y accesible */
+        /* 2. Estilos generales a PANTALLA COMPLETA */
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #fcf9f5;
             color: #333333;
             margin: 0;
-            padding: 15px;
+            padding: 0;
+            min-height: 100vh;
+            width: 100vw;
             display: flex;
             justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            align-items: flex-start;
         }
 
         .container {
             width: 100%;
-            max-width: 580px;
+            min-height: 100vh;
             background: #ffffff;
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-            border: 1px solid #f0e6dc;
+            padding: 16px;
+            border-radius: 0;
+            box-shadow: none;
+            border: none;
         }
 
         /* Banner Superior */
@@ -87,7 +92,7 @@
         .header-texts h1 {
             margin: 0 0 3px 0;
             font-weight: 700;
-            font-size: 20px;
+            font-size: 22px;
             color: #ffffff;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
         }
@@ -103,8 +108,8 @@
         /* Botón de Volver */
         .back-btn {
             background-color: #3b5998;
-            padding: 10px 14px;
-            font-size: 14px;
+            padding: 12px 18px;
+            font-size: 15px;
             font-weight: bold;
             border: none;
             color: white;
@@ -115,13 +120,14 @@
             text-decoration: none;
             text-align: center;
             margin-bottom: 15px;
+            width: 100%;
         }
 
         .back-btn:hover {
             background-color: #2d4373;
         }
 
-        /* Menú en Cuadrícula de 9 Opciones */
+        /* Menú en Cuadrícula de Opciones */
         .menu-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -133,7 +139,7 @@
             color: white;
             border: none;
             border-radius: 12px;
-            padding: 14px 12px;
+            padding: 16px 12px;
             font-size: 15px;
             font-weight: bold;
             cursor: pointer;
@@ -142,7 +148,7 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
-            min-height: 85px;
+            min-height: 90px;
             box-shadow: 0 3px 8px rgba(29, 53, 87, 0.2);
             transition: transform 0.2s, background 0.2s;
             text-decoration: none;
@@ -170,13 +176,14 @@
             margin-top: 15px;
             background-color: #27ae60;
             color: white;
-            padding: 10px 16px;
+            padding: 12px 16px;
             border-radius: 8px;
             border: none;
             cursor: pointer;
             font-size: 14px;
             font-weight: bold;
             display: block;
+            width: 100%;
             box-shadow: 0 3px 6px rgba(39, 174, 96, 0.2);
         }
 
@@ -188,10 +195,10 @@
             margin-top: 8px;
             background-color: #3498db;
             color: white;
-            padding: 6px 12px;
+            padding: 8px 12px;
             border-radius: 6px;
             text-decoration: none;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: bold;
             display: inline-block;
             text-align: center;
@@ -203,23 +210,30 @@
 
         /* Título interno de las secciones multimedia */
         .section-title {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
             color: #bc6c25;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
+            display: block;
         }
 
         .media-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 12px;
+        }
+
+        @media (min-width: 480px) {
+            .media-grid {
+                grid-template-columns: 1fr 1fr;
+            }
         }
 
         .media-card {
             background: #ffffff;
             border: 1px solid #f0e6dc;
             border-radius: 12px;
-            padding: 10px;
+            padding: 12px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
             display: flex;
             flex-direction: column;
@@ -227,28 +241,23 @@
             transition: transform 0.2s;
         }
 
-        .media-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.08);
-        }
-
         .media-card h4 {
             margin: 0 0 8px 0;
-            font-size: 14px;
+            font-size: 15px;
             color: #2c3e50;
             line-height: 1.3;
         }
 
         audio {
             width: 100%;
-            height: 32px;
+            height: 36px;
             margin-top: 4px;
         }
 
         video, img {
             width: 100%;
             border-radius: 6px;
-            height: 110px;
+            height: 140px;
             object-fit: cover;
         }
     </style>
@@ -390,8 +399,8 @@
                 { nombre: "Resumen del Mes", archivo: "resumen.mp4" }
             ],
             documentos: [
-                { nombre: "Conócete (PDF)", archivo: "Conócete.pdf" },
-                { nombre: "Guía Conócete", archivo: "guia_dones.html" }
+                { nombre: "Conócete (PDF)", archivo: "Conócete.pdf", esPdf: true },
+                { nombre: "Guía Conócete", archivo: "guia_dones.html", esPdf: false }
             ]
         };
 
@@ -459,10 +468,12 @@
                     htmlContenido = `<p style="font-size:13px; color:#7f8c8d;">No hay documentos disponibles.</p>`;
                 } else {
                     datosMultimedia.documentos.forEach(item => {
+                        const esDownload = item.esPdf ? 'download' : '';
+                        const btnTexto = item.esPdf ? '📥 Abrir / Descargar PDF' : '📖 Abrir Guía Completa';
                         htmlContenido += `
                         <div class="media-card">
                             <h4>📄 ${item.nombre}</h4>
-                            <a href="multimedia/documentos/${item.archivo}" target="_blank" download class="btn-descargar">📥 Abrir / Descargar</a>
+                            <a href="multimedia/documentos/${item.archivo}" target="_blank" ${esDownload} class="btn-descargar">${btnTexto}</a>
                         </div>`;
                     });
                 }
@@ -477,7 +488,7 @@
             const caja = document.getElementById('resultado');
             const btnVolver = document.getElementById('btnVolver');
 
-            menu.style.display = 'grid'; // Restaura la cuadrícula de 2 columnas
+            menu.style.display = 'grid';
             caja.style.display = 'none';
             btnVolver.style.display = 'none';
         }
