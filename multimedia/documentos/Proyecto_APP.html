@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informe Técnico - Club Otoñal</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fdfbf7;
+            color: #2c3e50;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.7;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid #f0e6dc;
+        }
+        h1 {
+            color: #bc6c25;
+            font-size: 24px;
+            border-bottom: 2px solid #dda15e;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        h2 {
+            color: #2c3e50;
+            font-size: 18px;
+            margin-top: 25px;
+            border-left: 4px solid #bc6c25;
+            padding-left: 10px;
+        }
+        p, li {
+            font-size: 15px;
+            color: #4a5568;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        th, td {
+            border: 1px solid #e2d9ce;
+            padding: 10px 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4ece1;
+            color: #2c3e50;
+        }
+        .footer-note {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            font-size: 13px;
+            color: #7f8c8d;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Informe Técnico y Consolidado del Proyecto: "Club Otoñal"</h1>
+    <p><strong>Estado del Proyecto:</strong> Funcional, en producción e instalable (PWA).</p>
+    <p><strong>Plataforma de Despliegue:</strong> GitHub Pages.</p>
+
+    <h2>1. Resumen Ejecutivo</h2>
+    <p>
+        La aplicación web progresiva (PWA) <strong>Club Otoñal</strong> ha sido desarrollada para centralizar la comunicación, el contenido edificante y las actividades del ministerio. Está diseñada bajo una arquitectura ligera de archivo único (SPA basada en <code>index.html</code>) que optimiza el rendimiento y simplifica el mantenimiento sin requerir compilaciones pesadas de APKs.
+    </p>
+
+    <h2>2. Marco Conceptual y Operativo</h2>
+    <ul>
+        <li><strong>Motivación (¿Por qué?):</strong> Facilitar un canal digital accesible, limpio y rápido para la comunidad, especialmente pensado para su uso en dispositivos móviles de forma intuitiva.</li>
+        <li><strong>Objetivo (¿Para qué?):</strong> Centralizar calendarios de actividades, reflexiones diarias, galerías multimedia y guías institucionales en un solo entorno unificado.</li>
+        <li><strong>Metodología (¿Cómo?):</strong> Uso de tecnologías web nativas (HTML5, CSS3, JavaScript ES6), estructuración modular mediante carpetas de recursos planos y control de versiones a través de Git y GitHub Desktop.</li>
+    </ul>
+
+    <h2>3. Desafíos Técnicos Superados</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Reto Identificado</th>
+                <th>Causa en Entorno Móvil</th>
+                <th>Solución Implementada</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Salida accidental de la App</strong></td>
+                <td>Accionamiento involuntario del botón físico o gesto "Atrás" del teléfono.</td>
+                <td>Intercepción del evento <code>popstate</code> mediante historial virtual, forzando la navegación interna y estableciendo una confirmación por doble toque para salir.</td>
+            </tr>
+            <tr>
+                <td><strong>Pérdida de contexto al ver imágenes</strong></td>
+                <td>Apertura de archivos en nuevas pestañas del navegador externo.</td>
+                <td>Diseño de un <strong>Visor Modal Interno</strong> a pantalla completa que permite inspeccionar las fotografías sin salir de la interfaz de la aplicación.</td>
+            </tr>
+            <tr>
+                <td><strong>Reproducción residual multimedia</strong></td>
+                <td>Audios y videos continuaban sonando al cambiar de sección o cerrar vistas.</td>
+                <td>Incorporación de la rutina global de limpieza <code>detenerTodoMultimedia()</code> vinculada a los eventos de navegación principal.</td>
+            </tr>
+            <tr>
+                <td><strong>Distribución y formato</strong></td>
+                <td>Dependencia inicial de entornos de compilación de aplicaciones nativas (APK).</td>
+                <td>Evolución a PWA con manifiesto (<code>manifest.json</code>) y Service Worker, habilitando la instalación directa desde el navegador web.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>4. Arquitectura y Módulos Principales</h2>
+    <ul>
+        <li><strong>Pantalla de Bienvenida (Splash Screen):</strong> Presentación formal institucional con acceso controlado a la interfaz principal.</li>
+        <li><strong>Menú de Cuadrícula (9 Secciones):</strong> Navegación directa hacia actividades, colaboradores, palabras de aliento aleatorias, contactos, audios, imágenes, videos, documentos y donativos.</li>
+        <li><strong>Control Multimedia Integrado:</strong> Reproductores HTML5 adaptados ergonómicamente para evitar toques accidentales en controles de volumen.</li>
+    </ul>
+
+    <div class="footer-note">
+        Ministerio Club Otoñal &bull; Documento generado para consulta interna de la aplicación.
+    </div>
+</div>
+
+</body>
+</html>
