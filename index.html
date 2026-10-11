@@ -161,34 +161,33 @@
             background: linear-gradient(135deg, #1d3557, #14213d);
         }
 
-        /* Caja de contenido general con control de espaciado */
+        /* Caja de contenido general con letra más amplia y legible */
         .content-box {
             margin-top: 10px;
-            padding: 18px;
+            padding: 20px;
             background: #fdfbf7;
             border-radius: 14px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
             border: 1px solid #f0e6dc;
-            color: #333333;
-            font-size: 15px;
-            line-height: 1.5; /* Controla la separación entre líneas */
+            color: #2c3e50;
+            font-size: 17px; /* Letra ampliada para mayor comodidad */
+            line-height: 1.6;
         }
 
-        /* Control estricto de párrafos y listas importadas para evitar separación excesiva */
         .content-box p, .content-box ul, .content-box li {
-            margin-top: 6px;
-            margin-bottom: 10px;
+            margin-top: 8px;
+            margin-bottom: 12px;
         }
 
         .btn-otra-vez {
-            margin-top: 15px;
+            margin-top: 20px;
             background-color: #27ae60;
             color: white;
-            padding: 12px 16px;
-            border-radius: 8px;
+            padding: 14px 16px;
+            border-radius: 10px;
             border: none;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: bold;
             display: block;
             width: 100%;
@@ -290,7 +289,7 @@
                 📅 1. Próxima Actividad
                 <span>Ver detalles ›</span>
             </button>
-            <button class="menu-btn" onclick="cargarTexto('colaborar.txt')">
+            <button class="menu-btn" onclick="cargarTexto('colaborar.html')">
                 🤝 2. Cómo Colaborar
                 <span>Ver detalles ›</span>
             </button>
@@ -298,7 +297,7 @@
                 📖 3. Palabra Aliento
                 <span>Leer versículo ›</span>
             </button>
-            <button class="menu-btn" onclick="cargarTexto('contacto.txt')">
+            <button class="menu-btn" onclick="cargarTexto('contacto.html')">
                 📞 4. Contactar Equipo
                 <span>Ver números ›</span>
             </button>
@@ -318,7 +317,7 @@
                 📄 8. Documentos
                 <span>Ver archivos ›</span>
             </button>
-            <button class="menu-btn" onclick="cargarTexto('donativos.txt')">
+            <button class="menu-btn" onclick="cargarTexto('donativos.html')">
                 ❤️ 9. Hacer Donativo
                 <span>Información ›</span>
             </button>
@@ -385,9 +384,9 @@
 
             let versiculoSeleccionado = "";
             const indiceAleatorio = Math.floor(Math.random() * listaVersiculos.length);
-            versiculoSeleccionado = `📖 PALABRA DE ALIENTO:\n\n"${listaVersiculos[indiceAleatorio]}"`;
+            versiculoSeleccionado = `📖 <strong>PALABRA DE ALIENTO:</strong><br><br>"${listaVersiculos[indiceAleatorio]}"`;
 
-            caja.innerHTML = `<div>${versiculoSeleccionado}</div>
+            caja.innerHTML = `<div style="font-size: 18px; line-height: 1.7;">${versiculoSeleccionado}</div>
             <button class="btn-otra-vez" onclick="cargarPalabraAliento(false)">🔄 Ver otro versículo</button>`;
         }
 
