@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club Otoñal</title>
+    <link rel="manifest" href="manifest.json">
+    
+    <style>
+  /* Ocultar insignia y marcos flotantes de Netlify */
+  iframe[src*="netlify"], div[class*="netlify-badge"], a[href*="netlify.com"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+        /* 2. Estilos generales con ambiente cálido y accesible */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fcf9f5;
+            color: #333333;
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 580px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            border: 1px solid #f0e6dc;
+        }
+
+        /* Banner Superior */
+        .banner-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 18px 20px;
+            border-radius: 14px;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            box-shadow: inset 0 0 2000px rgba(0, 0, 0, 0.45);
+        }
+
+        .logo-container {
+            position: relative;
+            z-index: 2;
+            width: 75px;
+            height: 75px;
+            min-width: 75px;
+            max-width: 75px;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            border: 3px solid #ffffff;
+            overflow: hidden;
+            background: #faeded;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Textos del Banner */
+        .header-texts {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .header-texts h1 {
+            margin: 0 0 3px 0;
+            font-weight: 700;
+            font-size: 20px;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        .header-texts p {
+            margin: 0;
+            font-weight: 500;
+            font-size: 14px;
+            color: #fcf9f5;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Botón de Volver */
+        .back-btn {
+            background-color: #3b5998;
+            padding: 10px 14px;
+            font-size: 14px;
+            font-weight: bold;
+            border: none;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            display: inline-block;
+            transition: background-color 0.2s;
+            text-decoration: none;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .back-btn:hover {
+            background-color: #2d4373;
+        }
+
+        /* Menú en Cuadrícula de 9 Opciones */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .menu-btn {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 12px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            min-height: 85px;
+            box-shadow: 0 3px 8px rgba(29, 53, 87, 0.2);
+            transition: transform 0.2s, background 0.2s;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .menu-btn:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #1d3557, #14213d);
+        }
+
+        /* Caja de contenido general */
+        .content-box {
+            margin-top: 10px;
+            padding: 18px;
+            background: #fdfbf7;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            white-space: pre-line;
+            border: 1px solid #f0e6dc;
+            color: #333333;
+        }
+
+        .btn-otra-vez {
+            margin-top: 15px;
+            background-color: #27ae60;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            display: block;
+            box-shadow: 0 3px 6px rgba(39, 174, 96, 0.2);
+        }
+
+        .btn-otra-vez:hover {
+            background-color: #219653;
+        }
+
+        .btn-descargar {
+            margin-top: 8px;
+            background-color: #3498db;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-descargar:hover {
+            background-color: #2980b9;
+        }
+
+        /* Título interno de las secciones multimedia */
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #bc6c25;
+            margin-bottom: 12px;
+        }
+
+        .media-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .media-card {
+            background: #ffffff;
+            border: 1px solid #f0e6dc;
+            border-radius: 12px;
+            padding: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s;
+        }
+
+        .media-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .media-card h4 {
+            margin: 0 0 8px 0;
+            font-size: 14px;
+            color: #2c3e50;
+            line-height: 1.3;
+        }
+
+        audio {
+            width: 100%;
+            height: 32px;
+            margin-top: 4px;
+        }
+
+        video, img {
+            width: 100%;
+            border-radius: 6px;
+            height: 110px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Banner Superior con foto de fondo y el logotipo circular -->
+        <div class="banner-header" style="background-image: url('multimedia/imagenes/banner.jpeg');">
+            <div class="logo-container">
+                <img src="multimedia/imagenes/banner.jpeg" alt="Club Otoñal">
+            </div>
+            <div class="header-texts">
+                <h1>Club Otoñal</h1>
+                <p>Conéctate con nuestra comunidad</p>
+            </div>
+        </div>
+
+        <button id="btnVolver" class="back-btn" onclick="mostrarMenuPrincipal()" style="display: none;">← Volver al Menú</button>
+
+        <!-- Menú en Cuadrícula de 9 Opciones -->
+        <div id="menuPrincipal" class="menu-grid">
+            <button class="menu-btn" onclick="cargarTexto('proxima_actividad.html')">
+                📅 1. Próxima Actividad
+                <span>Ver detalles ›</span>
+            </button>
+            <button class="menu-btn" onclick="cargarTexto('colaborar.txt')">
+                🤝 2. Cómo Colaborar
+                <span>Ver detalles ›</span>
+            </button>
+            <button class="menu-btn" onclick="cargarPalabraAliento()">
+                📖 3. Palabra Aliento
+                <span>Leer versículo ›</span>
+            </button>
+            <button class="menu-btn" onclick="cargarTexto('contacto.txt')">
+                📞 4. Contactar Equipo
+                <span>Ver números ›</span>
+            </button>
+            <button class="menu-btn" onclick="cargarSeccion('audios')">
+                🎵 5. Audios / Canciones
+                <span>Escuchar ›</span>
+            </button>
+            <button class="menu-btn" onclick="cargarSeccion('imagenes')">
+                🖼️ 6. Galería Imágenes
+                <span>Ver fotos ›</span>
+            </button>
+            <button class="menu-btn" onclick="cargarSeccion('videos')">
+                🎬 7. Videos
+                <span>Reproducir ›</span>
+            </button>
+            <button class="menu-btn" onclick="cargarSeccion('documentos')">
+                📄 8. Documentos
+                <span>Ver archivos ›</span>
+            </button>
+            <button class="menu-btn" onclick="cargarTexto('donativos.txt')">
+                ❤️ 9. Hacer Donativo
+                <span>Información ›</span>
+            </button>
+        </div>
+
+        <div id="resultado" class="content-box" style="display: none;">
+            <!-- Aquí se cargará la información seleccionada -->
+        </div>
+    </div>
+
+    <script>
+        let listaVersiculos = [];
+
+        async function cargarTexto(nombreArchivo) {
+            const menu = document.getElementById('menuPrincipal');
+            const caja = document.getElementById('resultado');
+            const btnVolver = document.getElementById('btnVolver');
+
+            menu.style.display = 'none';
+            caja.style.display = 'block';
+            btnVolver.style.display = 'block';
+            caja.innerHTML = "Cargando información...";
+
+            try {
+                const respuesta = await fetch(`textos/${nombreArchivo}`);
+                if (!respuesta.ok) throw new Error("Archivo no encontrado");
+                const texto = await respuesta.text();
+                caja.innerHTML = texto;
+            } catch (error) {
+                caja.innerHTML = `⚠️ Aviso: No se encontró el archivo textos/${nombreArchivo}.`;
+            }
+        }
+
+        async function cargarPalabraAliento(esDelDia = false) {
+            const menu = document.getElementById('menuPrincipal');
+            const caja = document.getElementById('resultado');
+            const btnVolver = document.getElementById('btnVolver');
+
+            menu.style.display = 'none';
+            caja.style.display = 'block';
+            btnVolver.style.display = 'block';
+
+            if (listaVersiculos.length === 0) {
+                caja.innerText = "Cargando palabra de aliento...";
+                try {
+                    const respuesta = await fetch('textos/aliento.txt');
+                    if (!respuesta.ok) throw new Error("No se encontró el archivo aliento.txt");
+                    const textoTotal = await respuesta.text();
+                    listaVersiculos = textoTotal.split('\n').map(v => v.trim()).filter(v => v.length > 0);
+                } catch (error) {
+                    caja.innerHTML = `⚠️ Aviso: No se encontró el archivo <em>textos/aliento.txt</em>.`;
+                    return;
+                }
+            }
+
+            if (listaVersiculos.length === 0) {
+                caja.innerText = "El archivo aliento.txt está vacío.";
+                return;
+            }
+
+            let versiculoSeleccionado = "";
+            const indiceAleatorio = Math.floor(Math.random() * listaVersiculos.length);
+            versiculoSeleccionado = `📖 PALABRA DE ALIENTO:\n\n"${listaVersiculos[indiceAleatorio]}"`;
+
+            caja.innerHTML = `<div>${versiculoSeleccionado}</div>
+            <button class="btn-otra-vez" onclick="cargarPalabraAliento(false)">🔄 Ver otro versículo</button>`;
+        }
+
+        // ==========================================
+        // LISTA DE CONTROL MULTIMEDIA
+        // ==========================================
+        const datosMultimedia = {
+            audios: [
+                { nombre: "Aceite Fresco", archivo: "Aceite Fresco _ Yahweh Video Oficial Con Letra _ New Wine (320).mp3" },
+                { nombre: "Al que está sentado en el Trono", archivo: "Al que está sentado en el trono - Marcos Brunet Ft Lucas Conslie (Letras) (320).mp3" },
+                { nombre: "Ven Espíritu", archivo: "Barak Ven Espíritu Santo (Video Lyric) (320).mp3" },    
+                { nombre: "Bienvenido Espíritu Santo", archivo: "Bienvenido Espíritu Santo Miel San Marcos  Letra. (320).mp3" }                    
+            ],
+            imagenes: [
+                { nombre: "Reunión de Comunidad", archivo: "reunion.jpg" },
+                { nombre: "Actividad al Aire Libre", archivo: "aire_libre.jpg" }
+            ],
+            videos: [
+                { nombre: "Resumen del Mes", archivo: "resumen.mp4" }
+            ],
+            documentos: [
+                { nombre: "Conócete (PDF)", archivo: "Conócete.pdf" },
+                { nombre: "Guía Conócete", archivo: "guia_dones.html" }
+            ]
+        };
+
+        function cargarSeccion(tipo) {
+            const menu = document.getElementById('menuPrincipal');
+            const caja = document.getElementById('resultado');
+            const btnVolver = document.getElementById('btnVolver');
+
+            menu.style.display = 'none';
+            caja.style.display = 'block';
+            btnVolver.style.display = 'block';
+
+            let tituloSeccion = "";
+            let htmlContenido = `<div class="media-grid">`;
+
+            if (tipo === 'audios') {
+                tituloSeccion = "🎵 Audios y Canciones";
+                if (datosMultimedia.audios.length === 0) {
+                    htmlContenido = `<p style="font-size:13px; color:#7f8c8d;">No hay audios disponibles.</p>`;
+                } else {
+                    datosMultimedia.audios.forEach(item => {
+                        htmlContenido += `
+                        <div class="media-card">
+                            <h4>${item.nombre}</h4>
+                            <audio controls>
+                                <source src="multimedia/audios/${item.archivo}" type="audio/mpeg">
+                                Tu navegador no soporta el audio.
+                            </audio>
+                        </div>`;
+                    });
+                }
+            } else if (tipo === 'imagenes') {
+                tituloSeccion = "🖼️ Galería de Imágenes";
+                if (datosMultimedia.imagenes.length === 0) {
+                    htmlContenido = `<p style="font-size:13px; color:#7f8c8d;">No hay imágenes disponibles.</p>`;
+                } else {
+                    datosMultimedia.imagenes.forEach(item => {
+                        htmlContenido += `
+                        <div class="media-card">
+                            <h4>${item.nombre}</h4>
+                            <img src="multimedia/imagenes/${item.archivo}" alt="${item.nombre}">
+                            <a href="multimedia/imagenes/${item.archivo}" download class="btn-descargar">📥 Descargar</a>
+                        </div>`;
+                    });
+                }
+            } else if (tipo === 'videos') {
+                tituloSeccion = "🎬 Videos";
+                if (datosMultimedia.videos.length === 0) {
+                    htmlContenido = `<p style="font-size:13px; color:#7f8c8d;">No hay videos disponibles.</p>`;
+                } else {
+                    datosMultimedia.videos.forEach(item => {
+                        htmlContenido += `
+                        <div class="media-card">
+                            <h4>${item.nombre}</h4>
+                            <video controls>
+                                <source src="multimedia/videos/${item.archivo}" type="video/mp4">
+                                Tu navegador no soporta el video.
+                            </video>
+                        </div>`;
+                    });
+                }
+            } else if (tipo === 'documentos') {
+                tituloSeccion = "📄 Documentos";
+                if (datosMultimedia.documentos.length === 0) {
+                    htmlContenido = `<p style="font-size:13px; color:#7f8c8d;">No hay documentos disponibles.</p>`;
+                } else {
+                    datosMultimedia.documentos.forEach(item => {
+                        htmlContenido += `
+                        <div class="media-card">
+                            <h4>📄 ${item.nombre}</h4>
+                            <a href="multimedia/documentos/${item.archivo}" target="_blank" download class="btn-descargar">📥 Abrir / Descargar</a>
+                        </div>`;
+                    });
+                }
+            }
+
+            htmlContenido += `</div>`;
+            caja.innerHTML = `<span class="section-title">${tituloSeccion}</span>` + htmlContenido;
+        }
+
+        function mostrarMenuPrincipal() {
+            const menu = document.getElementById('menuPrincipal');
+            const caja = document.getElementById('resultado');
+            const btnVolver = document.getElementById('btnVolver');
+
+            menu.style.display = 'grid'; // Restaura la cuadrícula de 2 columnas
+            caja.style.display = 'none';
+            btnVolver.style.display = 'none';
+        }
+    </script>
+
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('sw.js').then(function(registration) {
+            console.log('ServiceWorker registrado con éxito: ', registration.scope);
+          }, function(err) {
+            console.log('Fallo el registro del ServiceWorker: ', err);
+          });
+        });
+      }
+    </script>
+</body>
+</html>
