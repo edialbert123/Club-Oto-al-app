@@ -471,6 +471,7 @@
             document.getElementById('pantallaBienvenida').style.display = 'none';
             document.getElementById('vistaPrincipal').style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            
             estadoActual = 'menu';
             history.pushState({ vista: 'menu' }, '');
         }
@@ -490,6 +491,7 @@
             caja.style.display = 'block';
             btnVolver.style.display = 'block';
             caja.innerHTML = "Cargando información...";
+
             estadoActual = 'seccion';
             history.pushState({ vista: 'seccion' }, '');
 
@@ -512,6 +514,7 @@
             menu.style.display = 'none';
             caja.style.display = 'block';
             btnVolver.style.display = 'block';
+
             estadoActual = 'seccion';
             history.pushState({ vista: 'seccion' }, '');
 
@@ -563,6 +566,7 @@
             menu.style.display = 'none';
             caja.style.display = 'block';
             btnVolver.style.display = 'block';
+
             estadoActual = 'seccion';
             history.pushState({ vista: 'seccion' }, '');
 
@@ -604,9 +608,9 @@
         }
 
         function cerrarVisorImagen() {
+            document.getElementById('visorModal').style.display = 'none';
+            document.getElementById('imagenAmpliada').src = '';
             if (estadoActual === 'visor') {
-                document.getElementById('visorModal').style.display = 'none';
-                document.getElementById('imagenAmpliada').src = '';
                 estadoActual = 'seccion';
             }
         }
@@ -620,17 +624,24 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        /* CONTROL DEL BOTÓN RETROCESO */
+        /* CONTROL MANTENIDO DEL BOTÓN ATRÁS EN EL NAVEGADOR */
         window.addEventListener('popstate', function (event) {
+            // 1. Si está abierta una imagen ampliada
             if (estadoActual === 'visor') {
                 cerrarVisorImagen();
-                history.pushState({ vista: 'seccion' }, '');
-            } else if (estadoActual === 'seccion') {
+                return;
+            }
+
+            // 2. Si el usuario está dentro de una sección/documento/audiovisual
+            if (estadoActual === 'seccion') {
                 mostrarMenuPrincipal();
+                return;
+            }
+
+            // 3. Si está en el Menú Principal y presiona Atrás
+            if (estadoActual === 'menu') {
                 history.pushState({ vista: 'menu' }, '');
-            } else if (estadoActual === 'menu') {
                 document.getElementById('modalSalida').style.display = 'flex';
-                history.pushState({ vista: 'menu' }, '');
             }
         });
 
@@ -640,7 +651,7 @@
 
         function confirmarSalida() {
             document.getElementById('modalSalida').style.display = 'none';
-            history.back();
+            history.go(-2);
         }
     </script>
 
