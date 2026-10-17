@@ -7,7 +7,6 @@
     <link rel="manifest" href="manifest.json">
     
     <style>
-        /* Ocultar insignia y marcos flotantes */
         iframe[src*="netlify"], div[class*="netlify-badge"], a[href*="netlify.com"] {
             display: none !important;
             visibility: hidden !important;
@@ -37,13 +36,10 @@
             min-height: 100vh;
             background: #ffffff;
             padding: 16px;
-            border-radius: 0;
-            box-shadow: none;
-            border: none;
         }
 
         /* ----------------------------------------------------
-           1. PANTALLA DE BIENVENIDA (SPLASH SCREEN)
+           1. PANTALLA DE BIENVENIDA
         ---------------------------------------------------- */
         .welcome-screen {
             display: flex;
@@ -97,14 +93,8 @@
             border-radius: 30px;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(188, 108, 37, 0.3);
-            transition: transform 0.2s, background 0.2s;
             width: 100%;
             max-width: 280px;
-        }
-
-        .btn-ingresar:hover {
-            transform: translateY(-2px);
-            background: linear-gradient(135deg, #a45a1d, #c68e4c);
         }
 
         /* ----------------------------------------------------
@@ -124,12 +114,9 @@
         }
 
         .logo-container {
-            position: relative;
-            z-index: 2;
             width: 75px;
             height: 75px;
             min-width: 75px;
-            max-width: 75px;
             border-radius: 50%;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
             border: 3px solid #ffffff;
@@ -144,14 +131,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-        }
-
-        .header-texts {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
         }
 
         .header-texts h1 {
@@ -180,7 +159,7 @@
             background: linear-gradient(135deg, #2c3e50, #34495e);
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: 14px;
             padding: 16px 12px;
             font-size: 15px;
             font-weight: bold;
@@ -190,20 +169,23 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
-            min-height: 90px;
-            box-shadow: 0 3px 8px rgba(29, 53, 87, 0.2);
-            transition: transform 0.2s, background 0.2s;
-            text-decoration: none;
+            min-height: 105px;
+            box-shadow: 0 4px 10px rgba(29, 53, 87, 0.25);
             text-align: center;
+            border-bottom: 4px solid #bc6c25;
         }
 
-        .menu-btn:hover {
-            transform: translateY(-2px);
-            background: linear-gradient(135deg, #1d3557, #14213d);
+        .menu-btn .btn-indicador {
+            font-size: 12px;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 3px 8px;
+            border-radius: 10px;
+            margin-top: 4px;
+            color: #fcf9f5;
         }
 
         /* ----------------------------------------------------
-           3. VISTA DE CONTENIDO Y RESULTADOS
+           3. CONTENIDO Y RESULTADOS
         ---------------------------------------------------- */
         .content-box {
             margin-top: 10px;
@@ -217,84 +199,27 @@
             line-height: 1.6;
         }
 
-        .content-box p, .content-box ul, .content-box li {
-            margin-top: 8px;
-            margin-bottom: 12px;
-        }
-
         .back-btn {
             background-color: #3b5998;
-            padding: 14px 18px;
-            font-size: 15px;
+            padding: 16px 18px;
+            font-size: 16px;
             font-weight: bold;
             border: none;
             color: white;
-            border-radius: 10px;
+            border-radius: 12px;
             cursor: pointer;
             display: block;
-            transition: background-color 0.2s;
-            text-decoration: none;
             text-align: center;
             margin-top: 20px;
             margin-bottom: 20px;
             width: 100%;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-        }
-
-        .back-btn:hover {
-            background-color: #2d4373;
-        }
-
-        .btn-otra-vez {
-            margin-top: 20px;
-            background-color: #27ae60;
-            color: white;
-            padding: 14px 16px;
-            border-radius: 10px;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            display: block;
-            width: 100%;
-            box-shadow: 0 3px 6px rgba(39, 174, 96, 0.2);
-        }
-
-        .btn-otra-vez:hover {
-            background-color: #219653;
-        }
-
-        .btn-descargar {
-            margin-top: 8px;
-            background-color: #3498db;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: bold;
-            display: inline-block;
-            text-align: center;
-            cursor: pointer;
-            border: none;
-        }
-
-        .btn-descargar:hover {
-            background-color: #2980b9;
-        }
-
-        .section-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: #bc6c25;
-            margin-bottom: 14px;
-            display: block;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.15);
         }
 
         .media-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 12px;
+            gap: 14px;
         }
 
         @media (min-width: 480px) {
@@ -312,36 +237,37 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: transform 0.2s;
         }
 
         .media-card h4 {
             margin: 0 0 8px 0;
             font-size: 15px;
             color: #2c3e50;
-            line-height: 1.3;
         }
 
-        audio {
-            width: 100%;
-            height: 36px;
-            margin-top: 4px;
-        }
-
-        video, img {
+        audio, video {
             width: 100%;
             border-radius: 6px;
-            height: 140px;
-            object-fit: cover;
         }
 
-        /* Reorganizar controles de video para separar el volumen */
-        video::-webkit-media-controls-panel {
-            justify-content: space-around;
+        img.thumb-galeria {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .tag-ampliar {
+            font-size: 13px;
+            color: #bc6c25;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 6px;
         }
 
         /* ----------------------------------------------------
-           4. MODAL VISOR DE IMÁGENES INTERNO
+           4. VISOR DE IMÁGENES
         ---------------------------------------------------- */
         #visorModal {
             display: none;
@@ -351,7 +277,7 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
+            background-color: rgba(0, 0, 0, 0.92);
             justify-content: center;
             align-items: center;
             flex-direction: column;
@@ -360,10 +286,9 @@
 
         #visorModal img {
             max-width: 100%;
-            max-height: 80vh;
+            max-height: 75vh;
             border-radius: 8px;
             object-fit: contain;
-            height: auto;
         }
 
         .cerrar-visor {
@@ -371,16 +296,78 @@
             background-color: #e74c3c;
             color: white;
             border: none;
-            padding: 12px 24px;
+            padding: 14px 28px;
             font-size: 16px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        /* ----------------------------------------------------
+           5. MODAL PERSONALIZADO DE SALIDA
+        ---------------------------------------------------- */
+        #modalSalida {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-salida-contenido {
+            background-color: #ffffff;
+            padding: 24px;
+            border-radius: 16px;
+            text-align: center;
+            max-width: 320px;
+            width: 100%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            border: 2px solid #bc6c25;
+        }
+
+        .modal-salida-titulo {
+            font-size: 20px;
+            color: #2c3e50;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .modal-salida-texto {
+            font-size: 15px;
+            color: #555555;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .btn-modal-cancelar {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 15px;
             font-weight: bold;
             border-radius: 8px;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            width: 100%;
+            margin-bottom: 8px;
         }
 
-        .cerrar-visor:hover {
-            background-color: #c0392b;
+        .btn-modal-salir {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
         }
     </style>
 </head>
@@ -388,9 +375,7 @@
 
     <div class="container">
 
-        <!-- ==========================================
-             0. VISTA INICIAL: PANTALLA DE BIENVENIDA
-             ========================================== -->
+        <!-- 0. BIENVENIDA -->
         <div id="pantallaBienvenida" class="welcome-screen">
             <img src="multimedia/imagenes/banner.jpeg" alt="Logo Club Otoñal" class="welcome-logo">
             <h1 class="welcome-title">Bienvenido</h1>
@@ -398,14 +383,11 @@
             <p class="welcome-text">
                 Un espacio dedicado a conectar, edificar y compartir la Palabra de Dios y nuestras actividades comunitarias.
             </p>
-            <button class="btn-ingresar" onclick="ingresarAlMenu()">Dar Clik Aquí Para Ingresar a la App ›</button>
+            <button class="btn-ingresar" onclick="ingresarAlMenu()">👉 Toca aquí para ingresar</button>
         </div>
 
-        <!-- ==========================================
-             1. VISTA PRINCIPAL: MENÚ DE OPCIONES (OCULTO AL INICIO)
-             ========================================== -->
+        <!-- 1. VISTA PRINCIPAL -->
         <div id="vistaPrincipal" style="display: none;">
-            <!-- Banner Superior -->
             <div class="banner-header" style="background-image: url('multimedia/imagenes/banner.jpeg');">
                 <div class="logo-container">
                     <img src="multimedia/imagenes/banner.jpeg" alt="Club Otoñal">
@@ -416,88 +398,86 @@
                 </div>
             </div>
 
-            <!-- Menú en Cuadrícula de 9 Opciones -->
+            <!-- Menú Principal con indicadores de toque -->
             <div id="menuPrincipal" class="menu-grid">
                 <button class="menu-btn" onclick="cargarTexto('proxima_actividad.html')">
                     📅 1. Próxima Actividad
-                    <span>Ver detalles ›</span>
+                    <span class="btn-indicador">👉 Toca para ver</span>
                 </button>
                 <button class="menu-btn" onclick="cargarTexto('colaborar.html')">
                     🤝 2. Cómo Colaborar
-                    <span>Ver detalles ›</span>
+                    <span class="btn-indicador">👉 Toca para ver</span>
                 </button>
                 <button class="menu-btn" onclick="cargarPalabraAliento()">
                     📖 3. Palabra Aliento
-                    <span>Leer versículo ›</span>
+                    <span class="btn-indicador">👉 Toca para leer</span>
                 </button>
                 <button class="menu-btn" onclick="cargarTexto('contacto.html')">
                     📞 4. Contactar Equipo
-                    <span>Ver números ›</span>
+                    <span class="btn-indicador">👉 Toca para ver</span>
                 </button>
                 <button class="menu-btn" onclick="cargarSeccion('audios')">
                     🎵 5. Audios / Canciones
-                    <span>Escuchar ›</span>
+                    <span class="btn-indicador">👉 Toca para escuchar</span>
                 </button>
                 <button class="menu-btn" onclick="cargarSeccion('imagenes')">
                     🖼️ 6. Galería Imágenes
-                    <span>Ver fotos ›</span>
+                    <span class="btn-indicador">👉 Toca para ver</span>
                 </button>
                 <button class="menu-btn" onclick="cargarSeccion('videos')">
                     🎬 7. Videos
-                    <span>Reproducir ›</span>
+                    <span class="btn-indicador">👉 Toca para ver</span>
                 </button>
                 <button class="menu-btn" onclick="cargarSeccion('documentos')">
                     📄 8. Documentos
-                    <span>Ver archivos ›</span>
+                    <span class="btn-indicador">👉 Toca para ver</span>
                 </button>
                 <button class="menu-btn" onclick="cargarTexto('donativos.html')">
                     ❤️ 9. Hacer Donativo
-                    <span>Información ›</span>
+                    <span class="btn-indicador">👉 Toca para ver</span>
                 </button>
             </div>
         </div>
 
-        <!-- ==========================================
-             2. VISTA INTERNA: CONTENIDO Y RESULTADOS
-             ========================================== -->
-        <div id="resultado" class="content-box" style="display: none;">
-            <!-- Aquí se cargará el contenido seleccionado -->
-        </div>
+        <!-- 2. VISTA INTERNA -->
+        <div id="resultado" class="content-box" style="display: none;"></div>
 
         <!-- Botón Volver -->
         <button id="btnVolver" class="back-btn" onclick="mostrarMenuPrincipal()" style="display: none;">← Volver al Menú Principal</button>
     </div>
 
-    <!-- VISOR DE IMÁGENES MODAL (INTERNO) -->
+    <!-- VISOR DE IMÁGENES -->
     <div id="visorModal" onclick="cerrarVisorImagen()">
         <img id="imagenAmpliada" src="" alt="Imagen Ampliada">
-        <button class="cerrar-visor" onclick="cerrarVisorImagen()">Cerrar Imagen</button>
+        <button class="cerrar-visor" onclick="cerrarVisorImagen()">✖ Cerrar Imagen</button>
+    </div>
+
+    <!-- MODAL PERSONALIZADO DE SALIDA -->
+    <div id="modalSalida">
+        <div class="modal-salida-contenido">
+            <div class="modal-salida-titulo">Club Otoñal</div>
+            <div class="modal-salida-texto">¿Deseas salir de la aplicación?</div>
+            <button class="btn-modal-cancelar" onclick="cancelarSalida()">Seguir en la App</button>
+            <button class="btn-modal-salir" onclick="confirmarSalida()">Salir</button>
+        </div>
     </div>
 
     <script>
         let listaVersiculos = [];
-        let tiempoUltimoAtras = 0;
-        let visorAbierto = false;
+        let estadoActual = 'inicio'; // inicio, menu, seccion, visor
 
-        // Función para pasar de la Bienvenida al Menú Principal
         function ingresarAlMenu() {
             detenerTodoMultimedia();
             document.getElementById('pantallaBienvenida').style.display = 'none';
             document.getElementById('vistaPrincipal').style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            estadoActual = 'menu';
             history.pushState({ vista: 'menu' }, '');
         }
 
-        // Detener reproducción de todos los audios y videos
         function detenerTodoMultimedia() {
-            document.querySelectorAll('audio').forEach(audio => {
-                audio.pause();
-                audio.currentTime = 0;
-            });
-            document.querySelectorAll('video').forEach(video => {
-                video.pause();
-                video.currentTime = 0;
-            });
+            document.querySelectorAll('audio').forEach(a => { a.pause(); a.currentTime = 0; });
+            document.querySelectorAll('video').forEach(v => { v.pause(); v.currentTime = 0; });
         }
 
         async function cargarTexto(nombreArchivo) {
@@ -510,6 +490,7 @@
             caja.style.display = 'block';
             btnVolver.style.display = 'block';
             caja.innerHTML = "Cargando información...";
+            estadoActual = 'seccion';
             history.pushState({ vista: 'seccion' }, '');
 
             try {
@@ -518,11 +499,11 @@
                 const texto = await respuesta.text();
                 caja.innerHTML = texto;
             } catch (error) {
-                caja.innerHTML = `⚠️ Aviso: No se encontró el archivo textos/${nombreArchivo}.`;
+                caja.innerHTML = `⚠️ Aviso: No se pudo cargar el texto.`;
             }
         }
 
-        async function cargarPalabraAliento(esDelDia = false) {
+        async function cargarPalabraAliento() {
             detenerTodoMultimedia();
             const menu = document.getElementById('menuPrincipal');
             const caja = document.getElementById('resultado');
@@ -531,39 +512,31 @@
             menu.style.display = 'none';
             caja.style.display = 'block';
             btnVolver.style.display = 'block';
+            estadoActual = 'seccion';
             history.pushState({ vista: 'seccion' }, '');
 
             if (listaVersiculos.length === 0) {
                 caja.innerText = "Cargando palabra de aliento...";
                 try {
                     const respuesta = await fetch('textos/aliento.txt');
-                    if (!respuesta.ok) throw new Error("No se encontró el archivo aliento.txt");
                     const textoTotal = await respuesta.text();
                     listaVersiculos = textoTotal.split('\n').map(v => v.trim()).filter(v => v.length > 0);
                 } catch (error) {
-                    caja.innerHTML = `⚠️ Aviso: No se encontró el archivo <em>textos/aliento.txt</em>.`;
+                    caja.innerHTML = `⚠️ No se encontró el archivo de versículos.`;
                     return;
                 }
             }
 
-            if (listaVersiculos.length === 0) {
-                caja.innerText = "El archivo aliento.txt está vacío.";
-                return;
-            }
-
-            const indiceAleatorio = Math.floor(Math.random() * listaVersiculos.length);
-            const versiculoSeleccionado = `📖 <strong>PALABRA DE ALIENTO:</strong><br><br>"${listaVersiculos[indiceAleatorio]}"`;
-
-            caja.innerHTML = `<div style="font-size: 18px; line-height: 1.7;">${versiculoSeleccionado}</div>
-            <button class="btn-otra-vez" onclick="cargarPalabraAliento(false)">🔄 Ver otro versículo</button>`;
+            const indice = Math.floor(Math.random() * listaVersiculos.length);
+            caja.innerHTML = `<div style="font-size: 18px; line-height: 1.7;">📖 <strong>PALABRA DE ALIENTO:</strong><br><br>"${listaVersiculos[indice]}"</div>
+            <button class="back-btn" style="background-color:#27ae60;" onclick="cargarPalabraAliento()">🔄 Leer otro versículo</button>`;
         }
 
-        // CONTROL MULTIMEDIA
         const datosMultimedia = {
             audios: [
                 { nombre: "Aceite Fresco", archivo: "Aceite Fresco _ Yahweh Video Oficial Con Letra _ New Wine (320).mp3" },
                 { nombre: "Al que está sentado en el Trono", archivo: "Al que está sentado en el trono - Marcos Brunet Ft Lucas Conslie (Letras) (320).mp3" },
-                { nombre: "Ven Espíritu", archivo: "Barak - Ven Espíritu Santo (Video Lyric) (320).mp3" },    
+                { nombre: "Ven Espíritu", archivo: "Barak Ven Espíritu Santo (Video Lyric) (320).mp3" },    
                 { nombre: "Bienvenido Espíritu Santo", archivo: "Bienvenido Espíritu Santo Miel San Marcos  Letra. (320).mp3" }                    
             ],
             imagenes: [
@@ -575,9 +548,9 @@
                 { nombre: "Explico Registro", archivo: "Explico Registro.mp4" }
             ],
             documentos: [
+                { nombre: "Informe Técnico del Proyecto", archivo: "informe_proyecto.html", esPdf: false },
                 { nombre: "Conócete (PDF)", archivo: "Conócete.pdf", esPdf: true },
-                { nombre: "Guía Conócete", archivo: "guia_dones.html", esPdf: false },
-                { nombre: "Proyecto APP", archivo: "Proyecto_APP.html", esPdf: false }
+                { nombre: "Guía Conócete", archivo: "guia_dones.html", esPdf: false }
             ]
         };
 
@@ -590,148 +563,91 @@
             menu.style.display = 'none';
             caja.style.display = 'block';
             btnVolver.style.display = 'block';
+            estadoActual = 'seccion';
             history.pushState({ vista: 'seccion' }, '');
 
-            let tituloSeccion = "";
-            let htmlContenido = `<div class="media-grid">`;
+            let html = `<div class="media-grid">`;
 
             if (tipo === 'audios') {
-                tituloSeccion = "🎵 Audios y Canciones";
-                if (datosMultimedia.audios.length === 0) {
-                    htmlContenido = `<p style="font-size:13px; color:#7f8c8d;">No hay audios disponibles.</p>`;
-                } else {
-                    datosMultimedia.audios.forEach(item => {
-                        htmlContenido += `
-                        <div class="media-card">
-                            <h4>${item.nombre}</h4>
-                            <audio controls>
-                                <source src="multimedia/audios/${item.archivo}" type="audio/mpeg">
-                                Tu navegador no soporta el audio.
-                            </audio>
-                        </div>`;
-                    });
-                }
+                datosMultimedia.audios.forEach(item => {
+                    html += `<div class="media-card"><h4>${item.nombre}</h4><audio controls><source src="multimedia/audios/${item.archivo}" type="audio/mpeg"></audio></div>`;
+                });
             } else if (tipo === 'imagenes') {
-                tituloSeccion = "🖼️ Galería de Imágenes";
-                if (datosMultimedia.imagenes.length === 0) {
-                    htmlContenido = `<p style="font-size:13px; color:#7f8c8d;">No hay imágenes disponibles.</p>`;
-                } else {
-                    datosMultimedia.imagenes.forEach(item => {
-                        htmlContenido += `
-                        <div class="media-card">
-                            <h4>${item.nombre}</h4>
-                            <img src="multimedia/imagenes/${item.archivo}" alt="${item.nombre}" style="cursor: pointer;" onclick="abrirVisorImagen('multimedia/imagenes/${item.archivo}')">
-                            <button class="btn-descargar" onclick="abrirVisorImagen('multimedia/imagenes/${item.archivo}')">🔍 Ver Imagen Completa</button>
-                        </div>`;
-                    });
-                }
+                datosMultimedia.imagenes.forEach(item => {
+                    html += `
+                    <div class="media-card">
+                        <h4>${item.nombre}</h4>
+                        <img src="multimedia/imagenes/${item.archivo}" class="thumb-galeria" onclick="abrirVisorImagen('multimedia/imagenes/${item.archivo}')">
+                        <div class="tag-ampliar">🔍 Toca la imagen para ampliar</div>
+                    </div>`;
+                });
             } else if (tipo === 'videos') {
-                tituloSeccion = "🎬 Videos";
-                if (datosMultimedia.videos.length === 0) {
-                    htmlContenido = `<p style="font-size:13px; color:#7f8c8d;">No hay videos disponibles.</p>`;
-                } else {
-                    datosMultimedia.videos.forEach(item => {
-                        htmlContenido += `
-                        <div class="media-card">
-                            <h4>${item.nombre}</h4>
-                            <video controls>
-                                <source src="multimedia/videos/${item.archivo}" type="video/mp4">
-                                Tu navegador no soporta el video.
-                            </video>
-                        </div>`;
-                    });
-                }
+                datosMultimedia.videos.forEach(item => {
+                    html += `<div class="media-card"><h4>${item.nombre}</h4><video controls><source src="multimedia/videos/${item.archivo}" type="video/mp4"></video></div>`;
+                });
             } else if (tipo === 'documentos') {
-                tituloSeccion = "📄 Documentos";
-                if (datosMultimedia.documentos.length === 0) {
-                    htmlContenido = `<p style="font-size:13px; color:#7f8c8d;">No hay documentos disponibles.</p>`;
-                } else {
-                    datosMultimedia.documentos.forEach(item => {
-                        const esDownload = item.esPdf ? 'download' : '';
-                        const btnTexto = item.esPdf ? '📥 Abrir / Descargar PDF' : '📖 Abrir Guía Completa';
-                        htmlContenido += `
-                        <div class="media-card">
-                            <h4>📄 ${item.nombre}</h4>
-                            <a href="multimedia/documentos/${item.archivo}" target="_blank" ${esDownload} class="btn-descargar">${btnTexto}</a>
-                        </div>`;
-                    });
-                }
+                datosMultimedia.documentos.forEach(item => {
+                    const target = item.esPdf ? 'target="_blank"' : '';
+                    html += `<div class="media-card"><h4>📄 ${item.nombre}</h4><a href="multimedia/documentos/${item.archivo}" ${target} class="back-btn" style="text-decoration:none; margin:0; padding:10px;">📖 Abrir Documento</a></div>`;
+                });
             }
 
-            htmlContenido += `</div>`;
-            caja.innerHTML = `<span class="section-title">${tituloSeccion}</span>` + htmlContenido;
+            html += `</div>`;
+            caja.innerHTML = html;
         }
 
-        // Funciones para el Visor Interno de Imágenes
-        function abrirVisorImagen(rutaImagen) {
-            document.getElementById('imagenAmpliada').src = rutaImagen;
+        function abrirVisorImagen(ruta) {
+            document.getElementById('imagenAmpliada').src = ruta;
             document.getElementById('visorModal').style.display = 'flex';
-            visorAbierto = true;
+            estadoActual = 'visor';
             history.pushState({ vista: 'visor' }, '');
         }
 
         function cerrarVisorImagen() {
-            if (visorAbierto) {
-                visorAbierto = false;
+            if (estadoActual === 'visor') {
                 document.getElementById('visorModal').style.display = 'none';
                 document.getElementById('imagenAmpliada').src = '';
-                // Si el usuario cerró el visor con el botón, limpiamos el estado extra del historial
-                history.back();
+                estadoActual = 'seccion';
             }
         }
 
         function mostrarMenuPrincipal() {
             detenerTodoMultimedia();
-            const menu = document.getElementById('menuPrincipal');
-            const caja = document.getElementById('resultado');
-            const btnVolver = document.getElementById('btnVolver');
-
-            menu.style.display = 'grid';
-            caja.style.display = 'none';
-            btnVolver.style.display = 'none';
+            document.getElementById('menuPrincipal').style.display = 'grid';
+            document.getElementById('resultado').style.display = 'none';
+            document.getElementById('btnVolver').style.display = 'none';
+            estadoActual = 'menu';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // CONTROL DEL BOTÓN ATRÁS DEL TELÉFONO
+        /* CONTROL DEL BOTÓN RETROCESO */
         window.addEventListener('popstate', function (event) {
-            const visorModal = document.getElementById('visorModal');
-            const cajaResultado = document.getElementById('resultado');
-            const vistaPrincipal = document.getElementById('vistaPrincipal');
-
-            // Si el visor de imágenes estaba abierto, ciérralo y mantén la app abierta
-            if (visorModal && visorModal.style.display === 'flex') {
-                visorModal.style.display = 'none';
-                document.getElementById('imagenAmpliada').src = '';
-                visorAbierto = false;
+            if (estadoActual === 'visor') {
+                cerrarVisorImagen();
                 history.pushState({ vista: 'seccion' }, '');
-                return;
-            }
-
-            // Si estamos viendo una sección interna o un resultado
-            if (cajaResultado && cajaResultado.style.display === 'block') {
+            } else if (estadoActual === 'seccion') {
                 mostrarMenuPrincipal();
                 history.pushState({ vista: 'menu' }, '');
-            } else if (vistaPrincipal && vistaPrincipal.style.display === 'block') {
-                const ahora = new Date().getTime();
-                if (ahora - tiempoUltimoAtras < 2000) {
-                    history.back();
-                } else {
-                    tiempoUltimoAtras = ahora;
-                    history.pushState({ vista: 'menu' }, '');
-                    alert("Presiona de nuevo 'Atrás' para salir de la aplicación.");
-                }
+            } else if (estadoActual === 'menu') {
+                document.getElementById('modalSalida').style.display = 'flex';
+                history.pushState({ vista: 'menu' }, '');
             }
         });
+
+        function cancelarSalida() {
+            document.getElementById('modalSalida').style.display = 'none';
+        }
+
+        function confirmarSalida() {
+            document.getElementById('modalSalida').style.display = 'none';
+            history.back();
+        }
     </script>
 
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
-          navigator.serviceWorker.register('sw.js').then(function(registration) {
-            console.log('ServiceWorker registrado con éxito: ', registration.scope);
-          }, function(err) {
-            console.log('Fallo el registro del ServiceWorker: ', err);
-          });
+          navigator.serviceWorker.register('sw.js');
         });
       }
     </script>
