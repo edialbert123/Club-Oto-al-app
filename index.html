@@ -465,6 +465,7 @@
     <script>
         let listaVersiculos = [];
         let estadoActual = 'inicio'; // inicio, menu, seccion, visor
+        let permitirSalidaReal = false;
 
         function ingresarAlMenu() {
             detenerTodoMultimedia();
@@ -539,7 +540,7 @@
             audios: [
                 { nombre: "Aceite Fresco", archivo: "Aceite Fresco _ Yahweh Video Oficial Con Letra _ New Wine (320).mp3" },
                 { nombre: "Al que está sentado en el Trono", archivo: "Al que está sentado en el trono - Marcos Brunet Ft Lucas Conslie (Letras) (320).mp3" },
-                { nombre: "Ven Espíritu", archivo: "Barak Ven Espíritu Santo (Video Lyric) (320).mp3" },    
+                { nombre: "Ven Espíritu", archivo: "Barak - Ven Espíritu Santo (Video Lyric) (320).mp3" },    
                 { nombre: "Bienvenido Espíritu Santo", archivo: "Bienvenido Espíritu Santo Miel San Marcos  Letra. (320).mp3" }                    
             ],
             imagenes: [
@@ -624,8 +625,10 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        /* CONTROL MANTENIDO DEL BOTÓN ATRÁS EN EL NAVEGADOR */
+        /* CONTROL DEL BOTÓN RETROCESO */
         window.addEventListener('popstate', function (event) {
+            if (permitirSalidaReal) return;
+
             // 1. Si está abierta una imagen ampliada
             if (estadoActual === 'visor') {
                 cerrarVisorImagen();
@@ -651,7 +654,13 @@
 
         function confirmarSalida() {
             document.getElementById('modalSalida').style.display = 'none';
-            history.go(-2);
+            permitirSalidaReal = true;
+            // Cierra la PWA o pestaña de forma segura
+            window.close();
+            // Si el navegador bloquea el cierre directo, redirige o retrocede fuera
+            setTimeout(() => {
+                history.go(-3);
+            }, 200);
         }
     </script>
 
