@@ -594,13 +594,13 @@
                 datosMultimedia.documentos.forEach(item => {
                     const target = item.esPdf ? 'target="_blank"' : '';
                     html += `
-                    <div class="media-card" style="justify-content: space-between; gap: 12px;">
-                        <div style="font-size: 17px; font-weight: bold; color: #2c3e50; line-height: 1.4;">
+                    <div class="media-card" style="padding: 0; overflow: hidden; border: 1px solid #dcd1c4; background-color: #ffffff;">
+                        <a href="multimedia/documentos/${item.archivo}" ${target} style="display: block; background: linear-gradient(135deg, #2c3e50, #34495e); color: #ffffff; text-decoration: none; padding: 18px 16px; font-size: 18px; font-weight: bold; text-align: center; border-bottom: 3px solid #bc6c25;">
                             📄 ${item.nombre}
-                        </div>
-                        <a href="multimedia/documentos/${item.archivo}" ${target} style="display: inline-block; background-color: #3b5998; color: white; text-decoration: none; text-align: center; padding: 10px 16px; font-size: 14px; font-weight: bold; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                            📖 Leer Documento
                         </a>
+                        <div style="padding: 10px; text-align: center; font-size: 13px; font-weight: 600; color: #bc6c25; background-color: #fdfbf7;">
+                            👉 Toca el título arriba para abrir este documento
+                        </div>
                     </div>`;
                 });
             }
