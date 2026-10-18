@@ -39,7 +39,7 @@
         }
 
         /* ----------------------------------------------------
-           1. PANTALLA DE BIENVENIDA OBLIGATORIA / INSTALACIÓN
+           1. PANTALLA DE BIENVENIDA E INSTALACIÓN GUIADA
         ---------------------------------------------------- */
         .welcome-screen {
             display: flex;
@@ -76,44 +76,59 @@
         }
 
         .welcome-text {
-            font-size: 15px;
+            font-size: 14px;
             color: #555555;
             line-height: 1.5;
             max-width: 320px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
-        /* Botón principal de instalación (Obligatorio para nuevos usuarios) */
+        /* Botón principal de instalación (Verde llamativo) */
         .btn-instalar-app {
             background: linear-gradient(135deg, #27ae60, #2ecc71);
             color: white;
             border: none;
-            padding: 16px 24px;
-            font-size: 17px;
+            padding: 15px 24px;
+            font-size: 16px;
             font-weight: bold;
             border-radius: 30px;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
             width: 100%;
             max-width: 280px;
-            display: flex;
+            display: none; /* Se muestra solo cuando el navegador lo permite */
             align-items: center;
             justify-content: center;
             gap: 8px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
-        /* Nota de orientación clara y firme para la comunidad */
+        /* Botón para ingresar al menú sin instalar o después de instalar */
+        .btn-ingresar {
+            background: linear-gradient(135deg, #bc6c25, #dda15e);
+            color: white;
+            border: none;
+            padding: 15px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(188, 108, 37, 0.3);
+            width: 100%;
+            max-width: 280px;
+            margin-bottom: 12px;
+        }
+
+        /* Nota de ayuda clara para encontrar la app */
         .nota-ayuda {
-            font-size: 14px;
-            color: #c0392b;
-            background: #fdf3f2;
-            border: 1px dashed #f5b7b1;
-            padding: 12px 16px;
+            font-size: 13px;
+            color: #7f8c8d;
+            background: #fdfbf7;
+            border: 1px dashed #dcd1c4;
+            padding: 10px 14px;
             border-radius: 10px;
             max-width: 310px;
             line-height: 1.4;
-            font-weight: 500;
         }
 
         /* ----------------------------------------------------
@@ -394,23 +409,28 @@
 
     <div class="container">
 
-        <!-- 0. PANTALLA DE BIENVEVIDA OBLIGATORIA PARA INSTALAR -->
+        <!-- 0. BIENVENIDA E INSTALACIÓN GUIADA -->
         <div id="pantallaBienvenida" class="welcome-screen">
             <img src="multimedia/imagenes/banner.jpeg" alt="Logo Club Otoñal" class="welcome-logo">
             <h1 class="welcome-title">Bienvenido</h1>
             <div class="welcome-subtitle">Ministerio Club Otoñal</div>
             <p class="welcome-text">
-                Para disfrutar de todas las actividades y mensajes sin perderte, por favor instala la aplicación en tu celular.
+                Un espacio dedicado a conectar, edificar y compartir la Palabra de Dios y nuestras actividades.
             </p>
 
-            <!-- Botón único y obligatorio de instalación -->
+            <!-- Botón de instalación (Solo aparece si el navegador permite instalar) -->
             <button id="btnInstalar" class="btn-instalar-app" onclick="instalarAplicacion()">
-                📲 Toca aquí para instalar la App
+                📲 1. Toca aquí para instalar
             </button>
 
-            <!-- Nota de advertencia para guiar al usuario -->
+            <!-- Botón para entrar al menú -->
+            <button class="btn-ingresar" onclick="ingresarAlMenu()">
+                👉 2. Entrar al Menú Principal
+            </button>
+
+            <!-- Nota de orientación para el usuario -->
             <div class="nota-ayuda">
-                ⚠️ <strong>Importante:</strong> Debes tocar el botón verde para instalar la aplicación en tu pantalla de inicio y no perder el acceso.
+                💡 <strong>Nota:</strong> Al instalar, busca el icono con nuestro escudo en la pantalla principal o escritorio de tu teléfono para abrirla más rápido la próxima vez.
             </div>
         </div>
 
@@ -495,22 +515,13 @@
         let estadoActual = 'inicio'; // inicio, menu, seccion, visor
         let eventoInstalacion = null;
 
-        // Verificamos si la app ya fue abierta en modo PWA instalada
-        window.addEventListener('DOMContentLoaded', () => {
-            const esAppInstalada = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-            if (esAppInstalada) {
-                // Si ya está abierta como app instalada, saltamos la bienvenida de inmediato
-                ingresarAlMenu();
-            }
-        });
-
-        // Capturamos el aviso de instalación del navegador
+        // Capturamos el aviso automático de instalación del navegador
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             eventoInstalacion = e;
             const btnInstalar = document.getElementById('btnInstalar');
             if (btnInstalar) {
-                btnInstalar.style.display = 'flex';
+                btnInstalar.style.display = 'flex'; // Muestra el botón verde de instalación
             }
         });
 
@@ -521,15 +532,12 @@
                 eventoInstalacion.userChoice.then((choiceResult) => {
                     if (choiceResult.outcome === 'accepted') {
                         console.log('El usuario aceptó instalar la PWA');
-                        // Una vez aceptada la instalación, abrimos el menú
+                        // Ocultamos el botón y llevamos automáticamente al menú principal
+                        document.getElementById('btnInstalar').style.display = 'none';
                         ingresarAlMenu();
                     }
                     eventoInstalacion = null;
                 });
-            } else {
-                // Si por alguna razón el navegador no disparó el evento automático, 
-                // mostramos una guía súper sencilla para los hermanos
-                alert("Para instalar en tu teléfono:\n\nToca los tres puntos (⋮) arriba a la derecha en tu navegador y selecciona 'Instalar aplicación' o 'Añadir a la pantalla principal'.");
             }
         }
 
@@ -722,7 +730,7 @@
         }
 
         function confirmarSalida() {
-            document.getElementById('modalSalida'>style.display = 'none';
+            document.getElementById('modalSalida').style.display = 'none';
             try {
                 window.close();
             } catch (e) {}
