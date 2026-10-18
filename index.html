@@ -633,10 +633,8 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        /* CONTROL DEL BOTÓN RETROCESO */
+        /* CONTROL DEFINITIVO DEL BOTÓN RETROCESO Y SALIDA */
         window.addEventListener('popstate', function (event) {
-            if (permitirSalidaReal) return;
-
             // 1. Si está abierta una imagen ampliada
             if (estadoActual === 'visor') {
                 cerrarVisorImagen();
@@ -649,26 +647,35 @@
                 return;
             }
 
-            // 3. Si está en el Menú Principal y presiona Atrás
+            // 3. Si está en el Menú Principal y presiona Atrás de su teléfono
             if (estadoActual === 'menu') {
+                // Volvemos a colocar el estado para que el aviso no desaparezca solo
                 history.pushState({ vista: 'menu' }, '');
+                // Mostramos tu aviso grande y claro
                 document.getElementById('modalSalida').style.display = 'flex';
             }
         });
 
         function cancelarSalida() {
+            // El usuario quiere quedarse: cerramos el aviso y seguimos en la app
             document.getElementById('modalSalida').style.display = 'none';
         }
 
         function confirmarSalida() {
+            // El usuario SÍ se quiere salir de verdad de la aplicación:
             document.getElementById('modalSalida').style.display = 'none';
-            permitirSalidaReal = true;
-            // Cierra la PWA o pestaña de forma segura
-            window.close();
-            // Si el navegador bloquea el cierre directo, redirige o retrocede fuera
-            setTimeout(() => {
-                history.go(-3);
-            }, 200);
+            
+            // Truco seguro para salir de una PWA en Android: 
+            // Salimos al historial base fuera de la app o cerramos la vista actual
+            try {
+                // Intento 1: Salir al inicio del navegador o cerrar
+                window.close();
+            } catch (e) {
+                // Si el celular bloquea el cierre, redirigimos a una página vacía o salimos al sistema
+            }
+            
+            // Intento 2: Salto absoluto fuera de los estados de la PWA
+            history.go(-10);
         }
     </script>
 
