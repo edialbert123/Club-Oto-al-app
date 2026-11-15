@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Club Otoñal</title>
     <link rel="manifest" href="manifest.json">
-    
+
     <style>
         iframe[src*="netlify"], div[class*="netlify-badge"], a[href*="netlify.com"] {
             display: none !important;
@@ -25,7 +25,7 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            width: 100vw;
+            width: 100%;
             display: flex;
             justify-content: center;
             align-items: flex-start;
@@ -33,6 +33,7 @@
 
         .container {
             width: 100%;
+            max-width: 540px;
             min-height: 100vh;
             background: #ffffff;
             padding: 16px;
@@ -117,6 +118,23 @@
             width: 100%;
             max-width: 280px;
             margin-bottom: 12px;
+        }
+
+        /* Botón para activar notificaciones push */
+        .btn-versiculo {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: #ffffff;
+            border: none;
+            border-bottom: 3px solid #bc6c25;
+            padding: 14px 20px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(44, 62, 80, 0.25);
+            width: 100%;
+            max-width: 280px;
+            margin-bottom: 16px;
         }
 
         /* Nota de ayuda clara para encontrar la app */
@@ -428,6 +446,11 @@
                 👉 2. Entrar al Menú Principal
             </button>
 
+            <!-- Botón para activar notificaciones push del versículo diario -->
+            <button class="btn-versiculo" onclick="pedirPermisoVersiculo()">
+                🔔 Activar Versículo del Día en mi teléfono
+            </button>
+
             <!-- Nota de orientación para el usuario -->
             <div class="nota-ayuda">
                 💡 <strong>Nota:</strong> Al instalar, busca el icono con nuestro escudo en la pantalla principal o escritorio de tu teléfono para abrirla más rápido la próxima vez.
@@ -515,13 +538,19 @@
         let estadoActual = 'inicio'; // inicio, menu, seccion, visor
         let eventoInstalacion = null;
 
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('sw.js');
+            });
+        }
+
         // Capturamos el aviso automático de instalación del navegador
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             eventoInstalacion = e;
             const btnInstalar = document.getElementById('btnInstalar');
             if (btnInstalar) {
-                btnInstalar.style.display = 'flex'; // Muestra el botón verde de instalación
+                btnInstalar.style.display = 'flex';
             }
         });
 
@@ -531,8 +560,6 @@
                 eventoInstalacion.prompt();
                 eventoInstalacion.userChoice.then((choiceResult) => {
                     if (choiceResult.outcome === 'accepted') {
-                        console.log('El usuario aceptó instalar la PWA');
-                        // Ocultamos el botón y llevamos automáticamente al menú principal
                         document.getElementById('btnInstalar').style.display = 'none';
                         ingresarAlMenu();
                     }
@@ -546,7 +573,7 @@
             document.getElementById('pantallaBienvenida').style.display = 'none';
             document.getElementById('vistaPrincipal').style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            
+
             estadoActual = 'menu';
             history.pushState({ vista: 'menu' }, '');
         }
@@ -614,8 +641,8 @@
             audios: [
                 { nombre: "Aceite Fresco", archivo: "Aceite Fresco _ Yahweh Video Oficial Con Letra _ New Wine (320).mp3" },
                 { nombre: "Al que está sentado en el Trono", archivo: "Al que está sentado en el trono - Marcos Brunet Ft Lucas Conslie (Letras) (320).mp3" },
-                { nombre: "Ven Espíritu", archivo: "Barak - Ven Espíritu Santo (Video Lyric) (320).mp3" },    
-                { nombre: "Bienvenido Espíritu Santo", archivo: "Bienvenido Espíritu Santo Miel San Marcos  Letra. (320).mp3" }                    
+                { nombre: "Ven Espíritu", archivo: "Barak - Ven Espíritu Santo (Video Lyric) (320).mp3" },
+                { nombre: "Bienvenido Espíritu Santo", archivo: "Bienvenido Espíritu Santo Miel San Marcos  Letra. (320).mp3" }
             ],
             imagenes: [
                 { nombre: "Club Otoñal", archivo: "banner.jpeg" },
@@ -708,7 +735,7 @@
         }
 
         /* CONTROL DEFINITIVO DEL BOTÓN RETROCESO Y SALIDA */
-        window.addEventListener('popstate', function (event) {
+        window.addEventListener('popstate', function () {
             if (estadoActual === 'visor') {
                 cerrarVisorImagen();
                 return;
@@ -738,32 +765,21 @@
         }
     </script>
 
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
     <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-          navigator.serviceWorker.register('sw.js');
+        window.OneSignalDeferred = window.OneSignalDeferred || [];
+        OneSignalDeferred.push(async function(OneSignal) {
+            await OneSignal.init({
+                appId: "01b3d5eb-72d8-44d2-b8da-c61986cbe26a"
+            });
         });
-      }
+
+        function pedirPermisoVersiculo() {
+            window.OneSignalDeferred = window.OneSignalDeferred || [];
+            OneSignalDeferred.push(async function(OneSignal) {
+                await OneSignal.Notifications.requestPermission();
+            });
+        }
     </script>
-<button onclick="pedirPermisoVersiculo()" style="width: 100%; padding: 14px; margin-bottom: 14px; background: #bc6c25; color: #fff; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer;">
-  🔔 Activar Versículo del Día en mi teléfono
-</button>
-
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-<script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({
-      appId: "01b3d5eb-72d8-44d2-b8da-c61986cbe26a"
-    });
-  });
-
-  function pedirPermisoVersiculo() {
-    window.OneSignalDeferred = window.OneSignalDeferred || [];
-    OneSignalDeferred.push(async function(OneSignal) {
-      await OneSignal.Notifications.requestPermission();
-    });
-  }
-</script>
 </body>
 </html>
