@@ -745,5 +745,25 @@
         });
       }
     </script>
+<button onclick="pedirPermisoVersiculo()" style="width: 100%; padding: 14px; margin-bottom: 14px; background: #bc6c25; color: #fff; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer;">
+  🔔 Activar Versículo del Día en mi teléfono
+</button>
+
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "01b3d5eb-72d8-44d2-b8da-c61986cbe26a"
+    });
+  });
+
+  function pedirPermisoVersiculo() {
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.Notifications.requestPermission();
+    });
+  }
+</script>
 </body>
 </html>
