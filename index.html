@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Club Otoñal</title>
     <link rel="manifest" href="manifest.json">
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-<script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({
-      appId: "01b3d5eb-72d8-44d2-b8da-c61986cbe26a",
-    });
-  });
-</script>
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script>
+        window.OneSignalDeferred = window.OneSignalDeferred || [];
+        OneSignalDeferred.push(async function(OneSignal) {
+            await OneSignal.init({
+                appId: "01b3d5eb-72d8-44d2-b8da-c61986cbe26a",
+            });
+        });
+    </script>
     <style>
         iframe[src*="netlify"], div[class*="netlify-badge"], a[href*="netlify.com"] {
             display: none !important;
@@ -771,16 +771,6 @@
             } catch (e) {}
             history.go(-10);
         }
-    </script>
-
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-    <script>
-        window.OneSignalDeferred = window.OneSignalDeferred || [];
-        OneSignalDeferred.push(async function(OneSignal) {
-            await OneSignal.init({
-                appId: "01b3d5eb-72d8-44d2-b8da-c61986cbe26a"
-            });
-        });
 
         function pedirPermisoVersiculo() {
             window.OneSignalDeferred = window.OneSignalDeferred || [];
