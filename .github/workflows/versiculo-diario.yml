@@ -1,0 +1,24 @@
+name: Versiculo Diario Club Otonal
+
+on:
+  schedule:
+    # 11:00 UTC equivale a las 7:00 AM en Venezuela (UTC-4)
+    - cron: '0 11 * * *'
+  workflow_dispatch:
+
+jobs:
+  enviar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Enviar versiculo aleatorio
+        env:
+          ONESIGNAL_REST_API_KEY: ${{ VERSICULODIARIOCLUBOTONAL }}
+        run: node scripts/enviar-versiculo.js
