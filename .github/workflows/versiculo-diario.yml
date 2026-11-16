@@ -20,5 +20,5 @@ jobs:
 
       - name: Enviar versiculo aleatorio
         env:
-          ONESIGNAL_REST_API_KEY: ${{ VERSICULODIARIOCLUBOTONAL }}
+          ONESIGNAL_REST_API_KEY: ${{ secrets.VERSICULODIARIOCLUBOTONAL }}
         run: node scripts/enviar-versiculo.js
