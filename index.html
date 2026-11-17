@@ -48,7 +48,7 @@
         }
 
         /* ----------------------------------------------------
-        1. PANTALLA DE BIENVENIDA E INSTALACIÓN GUIADA
+1. PANTALLA DE BIENVENIDA E INSTALACIÓN GUIADA
         ---------------------------------------------------- */
         .welcome-screen {
             display: flex;
@@ -167,7 +167,7 @@
         }
 
         /* ----------------------------------------------------
-        2. VISTA PRINCIPAL (BANNER Y MENÚ)
+2. VISTA PRINCIPAL (BANNER Y MENÚ)
         ---------------------------------------------------- */
         .banner-header {
             display: flex;
@@ -254,7 +254,7 @@
         }
 
         /* ----------------------------------------------------
-        3. CONTENIDO Y RESULTADOS
+3. CONTENIDO Y RESULTADOS
         ---------------------------------------------------- */
         .content-box {
             margin-top: 10px;
@@ -336,7 +336,7 @@
         }
 
         /* ----------------------------------------------------
-        4. VISOR DE IMÁGENES
+4. VISOR DE IMÁGENES
         ---------------------------------------------------- */
         #visorModal {
             display: none;
@@ -373,7 +373,7 @@
         }
 
         /* ----------------------------------------------------
-        5. MODAL PERSONALIZADO DE SALIDA
+5. MODAL PERSONALIZADO DE SALIDA
         ---------------------------------------------------- */
         #modalSalida {
             display: none;
@@ -789,6 +789,22 @@
             }
         }
 
+        async function sincronizarSuscripcionOneSignal() {
+            return new Promise((resolve) => {
+                window.OneSignalDeferred = window.OneSignalDeferred || [];
+                OneSignalDeferred.push(async function(OneSignal) {
+                    try {
+                        await OneSignal.User.PushSubscription.optIn();
+                        const subId = OneSignal.User.PushSubscription.id;
+                        const optedIn = OneSignal.User.PushSubscription.optedIn;
+                        resolve(Boolean(subId && optedIn));
+                    } catch (err) {
+                        resolve(false);
+                    }
+                });
+            });
+        }
+
         async function pedirPermisoVersiculo() {
             if (!('Notification' in window)) {
                 actualizarEstadoVersiculo('Este navegador no admite notificaciones.');
@@ -796,36 +812,36 @@
             }
 
             if (Notification.permission === 'denied') {
-                actualizarEstadoVersiculo('Las notificaciones están bloqueadas en el navegador. Entra a Configuración del sitio > Notificaciones y ponlas en Permitir.');
+                actualizarEstadoVersiculo('Las notificaciones están bloqueadas. Entra a Configuración del sitio > Notificaciones y ponlas en Permitir.');
                 return;
             }
 
-            actualizarEstadoVersiculo('Solicitando permiso...');
+            actualizarEstadoVersiculo('Solicitando permiso y registrando en OneSignal...');
 
-            try {
-                const permiso = await Notification.requestPermission();
+            window.OneSignalDeferred = window.OneSignalDeferred || [];
+            OneSignalDeferred.push(async function(OneSignal) {
+                try {
+                    await OneSignal.Notifications.requestPermission();
+                    const registrado = await sincronizarSuscripcionOneSignal();
 
-                if (permiso === 'granted') {
-                    actualizarEstadoVersiculo('✅ Versículo diario activado en este dispositivo.');
-                    window.OneSignalDeferred = window.OneSignalDeferred || [];
-                    OneSignalDeferred.push(async function(OneSignal) {
-                        try {
-                            await OneSignal.User.PushSubscription.optIn();
-                        } catch (err) {
-                            // Si el SDK usa otro método en la versión cargada, se ignora sin romper el flujo
-                        }
-                    });
-                } else {
-                    actualizarEstadoVersiculo('No se activaron las notificaciones. Puedes volver a tocar el botón cuando quieras.');
+                    if (registrado) {
+                        actualizarEstadoVersiculo('✅ Versículo diario activado y registrado en este dispositivo.');
+                    } else {
+                        actualizarEstadoVersiculo('⚠️ Permiso concedido, pero OneSignal aún no completó el registro. Espera 3 segundos y vuelve a tocar el botón.');
+                    }
+                } catch (error) {
+                    actualizarEstadoVersiculo('No se pudo completar el registro de notificaciones.');
                 }
-            } catch (error) {
-                actualizarEstadoVersiculo('No se pudo abrir el aviso de permiso en este momento.');
-            }
+            });
         }
 
         window.addEventListener('load', function() {
             if ('Notification' in window && Notification.permission === 'granted') {
-                actualizarEstadoVersiculo('✅ Versículo diario ya está activo en este dispositivo.');
+                sincronizarSuscripcionOneSignal().then((registrado) => {
+                    if (registrado) {
+                        actualizarEstadoVersiculo('✅ Versículo diario ya está activo en este dispositivo.');
+                    }
+                });
             }
         });
     </script>
