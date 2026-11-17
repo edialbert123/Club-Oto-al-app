@@ -48,7 +48,7 @@
         }
 
         /* ----------------------------------------------------
-           1. PANTALLA DE BIENVENIDA E INSTALACIÓN GUIADA
+        1. PANTALLA DE BIENVENIDA E INSTALACIÓN GUIADA
         ---------------------------------------------------- */
         .welcome-screen {
             display: flex;
@@ -142,7 +142,16 @@
             box-shadow: 0 4px 12px rgba(44, 62, 80, 0.25);
             width: 100%;
             max-width: 280px;
-            margin-bottom: 16px;
+            margin-bottom: 10px;
+        }
+
+        .estado-versiculo {
+            font-size: 13px;
+            color: #2c3e50;
+            max-width: 310px;
+            min-height: 20px;
+            margin-bottom: 12px;
+            line-height: 1.4;
         }
 
         /* Nota de ayuda clara para encontrar la app */
@@ -158,7 +167,7 @@
         }
 
         /* ----------------------------------------------------
-           2. VISTA PRINCIPAL (BANNER Y MENÚ)
+        2. VISTA PRINCIPAL (BANNER Y MENÚ)
         ---------------------------------------------------- */
         .banner-header {
             display: flex;
@@ -245,7 +254,7 @@
         }
 
         /* ----------------------------------------------------
-           3. CONTENIDO Y RESULTADOS
+        3. CONTENIDO Y RESULTADOS
         ---------------------------------------------------- */
         .content-box {
             margin-top: 10px;
@@ -327,7 +336,7 @@
         }
 
         /* ----------------------------------------------------
-           4. VISOR DE IMÁGENES
+        4. VISOR DE IMÁGENES
         ---------------------------------------------------- */
         #visorModal {
             display: none;
@@ -364,7 +373,7 @@
         }
 
         /* ----------------------------------------------------
-           5. MODAL PERSONALIZADO DE SALIDA
+        5. MODAL PERSONALIZADO DE SALIDA
         ---------------------------------------------------- */
         #modalSalida {
             display: none;
@@ -455,9 +464,10 @@
             </button>
 
             <!-- Botón para activar notificaciones push del versículo diario -->
-            <button class="btn-versiculo" onclick="pedirPermisoVersiculo()">
+            <button id="btnVersiculo" class="btn-versiculo" onclick="pedirPermisoVersiculo()">
                 🔔 Activar Versículo del Día en mi teléfono
             </button>
+            <div id="estadoVersiculo" class="estado-versiculo"></div>
 
             <!-- Nota de orientación para el usuario -->
             <div class="nota-ayuda">
@@ -772,12 +782,52 @@
             history.go(-10);
         }
 
-        function pedirPermisoVersiculo() {
-            window.OneSignalDeferred = window.OneSignalDeferred || [];
-            OneSignalDeferred.push(async function(OneSignal) {
-                await OneSignal.Notifications.requestPermission();
-            });
+        function actualizarEstadoVersiculo(texto) {
+            const el = document.getElementById('estadoVersiculo');
+            if (el) {
+                el.textContent = texto;
+            }
         }
+
+        async function pedirPermisoVersiculo() {
+            if (!('Notification' in window)) {
+                actualizarEstadoVersiculo('Este navegador no admite notificaciones.');
+                return;
+            }
+
+            if (Notification.permission === 'denied') {
+                actualizarEstadoVersiculo('Las notificaciones están bloqueadas en el navegador. Entra a Configuración del sitio > Notificaciones y ponlas en Permitir.');
+                return;
+            }
+
+            actualizarEstadoVersiculo('Solicitando permiso...');
+
+            try {
+                const permiso = await Notification.requestPermission();
+
+                if (permiso === 'granted') {
+                    actualizarEstadoVersiculo('✅ Versículo diario activado en este dispositivo.');
+                    window.OneSignalDeferred = window.OneSignalDeferred || [];
+                    OneSignalDeferred.push(async function(OneSignal) {
+                        try {
+                            await OneSignal.User.PushSubscription.optIn();
+                        } catch (err) {
+                            // Si el SDK usa otro método en la versión cargada, se ignora sin romper el flujo
+                        }
+                    });
+                } else {
+                    actualizarEstadoVersiculo('No se activaron las notificaciones. Puedes volver a tocar el botón cuando quieras.');
+                }
+            } catch (error) {
+                actualizarEstadoVersiculo('No se pudo abrir el aviso de permiso en este momento.');
+            }
+        }
+
+        window.addEventListener('load', function() {
+            if ('Notification' in window && Notification.permission === 'granted') {
+                actualizarEstadoVersiculo('✅ Versículo diario ya está activo en este dispositivo.');
+            }
+        });
     </script>
 </body>
 </html>
