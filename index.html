@@ -10,7 +10,9 @@
         window.OneSignalDeferred = window.OneSignalDeferred || [];
         OneSignalDeferred.push(async function(OneSignal) {
             await OneSignal.init({
-                appId: "01b3d5eb-72d8-44d2-b8da-c61986cbe26a"
+                appId: "01b3d5eb-72d8-44d2-b8da-c61986cbe26a",
+                serviceWorkerParam: { scope: "/Club-Oto-al-app/" },
+                serviceWorkerPath: "/Club-Oto-al-app/OneSignalSDKWorker.js"
             });
         });
     </script>
@@ -781,7 +783,9 @@
             window.OneSignalDeferred = window.OneSignalDeferred || [];
             OneSignalDeferred.push(async function(OneSignal) {
                 try {
-                    await OneSignal.Notifications.requestPermission();
+                    if (Notification.permission !== 'granted') {
+                        await OneSignal.Notifications.requestPermission();
+                    }
                     await OneSignal.User.PushSubscription.optIn();
                 } catch (err) {}
             });
