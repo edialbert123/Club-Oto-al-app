@@ -11,7 +11,13 @@
         OneSignalDeferred.push(async function(OneSignal) {
             await OneSignal.init({
                 appId: "01b3d5eb-72d8-44d2-b8da-c61986cbe26a",
+                allowLocalhostAsSecureOrigin: true
             });
+            try {
+                if (Notification.permission === 'granted') {
+                    await OneSignal.User.PushSubscription.optIn();
+                }
+            } catch (e) {}
         });
     </script>
     <style>
@@ -789,29 +795,13 @@
             }
         }
 
-        function esperarConLimite(promesa, ms) {
-            return Promise.race([
-                promesa,
-                new Promise((resolve) => setTimeout(() => resolve('timeout'), ms))
-            ]);
-        }
-
-        async function sincronizarSuscripcionOneSignal() {
-            const resultado = await esperarConLimite(new Promise((resolve) => {
-                window.OneSignalDeferred = window.OneSignalDeferred || [];
-                OneSignalDeferred.push(async function(OneSignal) {
-                    try {
-                        await OneSignal.User.PushSubscription.optIn();
-                        const subId = OneSignal.User.PushSubscription.id;
-                        const optedIn = OneSignal.User.PushSubscription.optedIn;
-                        resolve(Boolean(subId || optedIn));
-                    } catch (err) {
-                        resolve(false);
-                    }
-                });
-            }), 6000);
-
-            return resultado === true;
+        function activarOneSignalSegundoPlano() {
+            window.OneSignalDeferred = window.OneSignalDeferred || [];
+            OneSignalDeferred.push(async function(OneSignal) {
+                try {
+                    await OneSignal.User.PushSubscription.optIn();
+                } catch (err) {}
+            });
         }
 
         async function pedirPermisoVersiculo() {
@@ -825,33 +815,31 @@
                 return;
             }
 
-            actualizarEstadoVersiculo('Activando versículo diario...');
+            if (Notification.permission === 'granted') {
+                actualizarEstadoVersiculo('✅ Versículo diario activado en este dispositivo.');
+                activarOneSignalSegundoPlano();
+                return;
+            }
+
+            actualizarEstadoVersiculo('Solicitando permiso...');
 
             try {
-                if (Notification.permission !== 'granted') {
-                    await esperarConLimite(Notification.requestPermission(), 8000);
-                }
-
-                if (Notification.permission !== 'granted') {
-                    actualizarEstadoVersiculo('No se concedió el permiso de notificaciones.');
-                    return;
-                }
-
-                const registrado = await sincronizarSuscripcionOneSignal();
-                if (registrado) {
+                const permiso = await Notification.requestPermission();
+                if (permiso === 'granted') {
                     actualizarEstadoVersiculo('✅ Versículo diario activado en este dispositivo.');
+                    activarOneSignalSegundoPlano();
                 } else {
-                    actualizarEstadoVersiculo('✅ Permiso concedido. Si no aparece de inmediato en OneSignal, cierra y vuelve a abrir la app.');
+                    actualizarEstadoVersiculo('No se concedió el permiso de notificaciones.');
                 }
             } catch (error) {
-                actualizarEstadoVersiculo('No se pudo completar el aviso en este momento.');
+                actualizarEstadoVersiculo('No se pudo completar el permiso en este momento.');
             }
         }
 
         window.addEventListener('load', function() {
             if ('Notification' in window && Notification.permission === 'granted') {
                 actualizarEstadoVersiculo('✅ Versículo diario activo en este dispositivo.');
-                sincronizarSuscripcionOneSignal();
+                activarOneSignalSegundoPlano();
             }
         });
     </script>
