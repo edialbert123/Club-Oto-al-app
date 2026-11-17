@@ -31,7 +31,7 @@ async function enviarNotificacion() {
     },
     body: JSON.stringify({
       app_id: APP_ID,
-      included_segments: ['Subscribed Users'],
+      included_segments: ['Total Subscriptions'],
       headings: { es: 'Club Otoñal — Palabra de Aliento' },
       contents: { es: versiculoElegido }
     })
