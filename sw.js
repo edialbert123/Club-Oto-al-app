@@ -1,5 +1,6 @@
 importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js');
-const CACHE_NAME = 'club-otonal-v4';
+
+const CACHE_NAME = 'club-otonal-v5';
 const urlsToCache = [
   './',
   './index.html',
@@ -16,18 +17,15 @@ const urlsToCache = [
   './multimedia/documentos/Conócete.pdf'
 ];
 
-// Instalación del Service Worker
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
-      console.log('Precargando archivos base...');
       return cache.addAll(urlsToCache);
     })
   );
   self.skipWaiting();
 });
 
-// Activación y limpieza
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(cacheNames => {
@@ -38,13 +36,34 @@ self.addEventListener('activate', event => {
           }
         })
       );
-    })
+    }).then(() => self.clients.claim())
   );
-  self.clientsClaim();
 });
 
-// Estrategia Cache First (Primero memoria local, luego red)
 self.addEventListener('fetch', event => {
+  const url = new URL(event.request.url);
+
+  // Dejar que OneSignal y peticiones externas pasen directo por red
+  if (url.origin !== self.location.origin || url.pathname.includes('OneSignalSDK')) {
+    return;
+  }
+
+  // Para index.html y raíz, intentar red primero y caer a caché solo si no hay internet
+  if (event.request.mode === 'navigate' || url.pathname.endsWith('/') || url.pathname.endsWith('index.html')) {
+    event.respondWith(
+      fetch(event.request)
+        .then(networkResponse => {
+          if (networkResponse && networkResponse.status === 200) {
+            const copia = networkResponse.clone();
+            caches.open(CACHE_NAME).then(cache => cache.put('./index.html', copia));
+          }
+          return networkResponse;
+        })
+        .catch(() => caches.match('./index.html'))
+    );
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then(cachedResponse => {
       if (cachedResponse) {
@@ -60,8 +79,6 @@ self.addEventListener('fetch', event => {
         });
         return networkResponse;
       });
-    }).catch(() => {
-      return caches.match('./index.html');
-    })
+    }).catch(() => caches.match('./index.html'))
   );
 });
