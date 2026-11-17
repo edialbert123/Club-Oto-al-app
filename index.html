@@ -12,7 +12,7 @@
             await OneSignal.init({
                 appId: "01b3d5eb-72d8-44d2-b8da-c61986cbe26a",
                 serviceWorkerParam: { scope: "/Club-Oto-al-app/" },
-                serviceWorkerPath: "/Club-Oto-al-app/OneSignalSDKWorker.js"
+                serviceWorkerPath: "OneSignalSDKWorker.js"
             });
         });
     </script>
@@ -107,7 +107,7 @@
             box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
             width: 100%;
             max-width: 280px;
-            display: none; /* Se muestra solo cuando el navegador lo permite */
+            display: none;
             align-items: center;
             justify-content: center;
             gap: 8px;
@@ -149,11 +149,6 @@
 
         .estado-versiculo {
             display: none;
-            font-size: 13px;
-            color: #2c3e50;
-            margin-top: 6px;
-            max-width: 300px;
-            line-height: 1.4;
         }
 
         /* Nota de ayuda clara para encontrar la app */
@@ -555,16 +550,15 @@
 
     <script>
         let listaVersiculos = [];
-        let estadoActual = 'inicio'; // inicio, menu, seccion, visor
+        let estadoActual = 'inicio';
         let eventoInstalacion = null;
 
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
-                navigator.serviceWorker.register('sw.js');
+                navigator.serviceWorker.register('sw.js', { scope: '/Club-Oto-al-app/' });
             });
         }
 
-        // Capturamos el aviso automático de instalación del navegador
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             eventoInstalacion = e;
@@ -574,7 +568,6 @@
             }
         });
 
-        // Función que se ejecuta al tocar el botón de instalar
         function instalarAplicacion() {
             if (eventoInstalacion) {
                 eventoInstalacion.prompt();
@@ -784,21 +777,9 @@
             history.go(-10);
         }
 
-        function pedirPermisoVersiculo() {
-            const estado = document.getElementById('estadoVersiculo');
-            if (estado) {
-                estado.style.display = 'block';
-                estado.textContent = 'Consultando permisos y OneSignal...';
-            }
-
-            if (!('Notification' in window)) {
-                if (estado) estado.textContent = 'Este navegador no soporta notificaciones.';
-                return;
-            }
-
-            if (Notification.permission === 'denied') {
-                if (estado) estado.textContent = 'Permiso bloqueado en el teléfono. Actívalo en Ajustes > Apps > Club Otoñal > Notificaciones.';
-                return;
+        async function pedirPermisoVersiculo() {
+            if ('Notification' in window && Notification.permission !== 'granted') {
+                await Notification.requestPermission();
             }
 
             window.OneSignalDeferred = window.OneSignalDeferred || [];
@@ -808,17 +789,7 @@
                         await OneSignal.Notifications.requestPermission();
                     }
                     await OneSignal.User.PushSubscription.optIn();
-                    const id = OneSignal.User.PushSubscription.id;
-                    if (estado) {
-                        estado.textContent = id
-                            ? 'Activado en OneSignal (ID: ' + id + ')'
-                            : 'Permiso procesado, pero OneSignal no devolvió ID de suscripción.';
-                    }
-                } catch (err) {
-                    if (estado) {
-                        estado.textContent = 'Error OneSignal: ' + (err && err.message ? err.message : err);
-                    }
-                }
+                } catch (e) {}
             });
         }
     </script>
