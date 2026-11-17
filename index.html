@@ -149,6 +149,11 @@
 
         .estado-versiculo {
             display: none;
+            font-size: 13px;
+            color: #2c3e50;
+            margin-top: 6px;
+            max-width: 300px;
+            line-height: 1.4;
         }
 
         /* Nota de ayuda clara para encontrar la app */
@@ -780,6 +785,22 @@
         }
 
         function pedirPermisoVersiculo() {
+            const estado = document.getElementById('estadoVersiculo');
+            if (estado) {
+                estado.style.display = 'block';
+                estado.textContent = 'Consultando permisos y OneSignal...';
+            }
+
+            if (!('Notification' in window)) {
+                if (estado) estado.textContent = 'Este navegador no soporta notificaciones.';
+                return;
+            }
+
+            if (Notification.permission === 'denied') {
+                if (estado) estado.textContent = 'Permiso bloqueado en el teléfono. Actívalo en Ajustes > Apps > Club Otoñal > Notificaciones.';
+                return;
+            }
+
             window.OneSignalDeferred = window.OneSignalDeferred || [];
             OneSignalDeferred.push(async function(OneSignal) {
                 try {
@@ -787,7 +808,17 @@
                         await OneSignal.Notifications.requestPermission();
                     }
                     await OneSignal.User.PushSubscription.optIn();
-                } catch (err) {}
+                    const id = OneSignal.User.PushSubscription.id;
+                    if (estado) {
+                        estado.textContent = id
+                            ? 'Activado en OneSignal (ID: ' + id + ')'
+                            : 'Permiso procesado, pero OneSignal no devolvió ID de suscripción.';
+                    }
+                } catch (err) {
+                    if (estado) {
+                        estado.textContent = 'Error OneSignal: ' + (err && err.message ? err.message : err);
+                    }
+                }
             });
         }
     </script>
