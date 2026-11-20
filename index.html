@@ -782,19 +782,54 @@
         }
 
         async function pedirPermisoVersiculo() {
-            if ('Notification' in window && Notification.permission !== 'granted') {
-                await Notification.requestPermission();
+            const divEstado = document.getElementById('estadoVersiculo');
+            if (divEstado) {
+                divEstado.style.display = 'block';
+                divEstado.style.fontSize = '13px';
+                divEstado.style.marginTop = '8px';
+                divEstado.style.color = '#2c3e50';
+                divEstado.textContent = 'Conectando con notificaciones...';
             }
 
-            window.OneSignalDeferred = window.OneSignalDeferred || [];
-            OneSignalDeferred.push(async function(OneSignal) {
-                try {
-                    if (Notification.permission !== 'granted') {
-                        await OneSignal.Notifications.requestPermission();
+            try {
+                if (!('Notification' in window)) {
+                    if (divEstado) divEstado.textContent = 'Este navegador no soporta notificaciones.';
+                    return;
+                }
+
+                if (Notification.permission === 'denied') {
+                    if (divEstado) divEstado.textContent = 'Bloqueado en Chrome: activa notificaciones en Configuración del sitio.';
+                    return;
+                }
+
+                if ('serviceWorker' in navigator) {
+                    await navigator.serviceWorker.ready;
+                }
+
+                const permiso = await Notification.requestPermission();
+                if (permiso !== 'granted') {
+                    if (divEstado) divEstado.textContent = 'Permiso no concedido (' + permiso + ').';
+                    return;
+                }
+
+                window.OneSignalDeferred = window.OneSignalDeferred || [];
+                OneSignalDeferred.push(async function(OneSignal) {
+                    try {
+                        await OneSignal.User.PushSubscription.optIn();
+                        const id = OneSignal.User.PushSubscription.id;
+                        const token = OneSignal.User.PushSubscription.token;
+                        if (divEstado) {
+                            divEstado.textContent = id
+                                ? 'Listo. Suscrito ID: ' + id.slice(0, 8) + '...'
+                                : 'Permiso OK, esperando token (' + (token ? 'con token' : 'sin token') + ')';
+                        }
+                    } catch (e) {
+                        if (divEstado) divEstado.textContent = 'Error OneSignal: ' + (e.message || e);
                     }
-                    await OneSignal.User.PushSubscription.optIn();
-                } catch (e) {}
-            });
+                });
+            } catch (err) {
+                if (divEstado) divEstado.textContent = 'Error: ' + (err.message || err);
+            }
         }
     </script>
 </body>
