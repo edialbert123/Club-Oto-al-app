@@ -810,7 +810,7 @@
                 }
 
                 if (Notification.permission === 'denied') {
-                    if (divEstado) divEstado.textContent = 'Bloqueado en Chrome: activa notificaciones en Configuración del sitio.';
+                    if (divEstado) divEstado.textContent = 'Notificaciones desactivadas en el navegador.';
                     return;
                 }
 
@@ -827,16 +827,22 @@
                         await OneSignal.User.PushSubscription.optIn();
 
                         let id = OneSignal.User.PushSubscription.id;
-                        if (!id) {
-                            await new Promise(r => setTimeout(r, 1500));
+                        let intentos = 0;
+
+                        while (!id && intentos < 8) {
+                            await new Promise(r => setTimeout(r, 1000));
                             id = OneSignal.User.PushSubscription.id;
+                            intentos++;
                         }
 
-                        const token = OneSignal.User.PushSubscription.token;
                         if (divEstado) {
-                            divEstado.textContent = id
-                                ? 'Listo. Suscrito ID: ' + id.slice(0, 8) + '...'
-                                : 'Permiso OK, esperando token (' + (token ? 'con token' : 'sin token') + ')';
+                            if (id) {
+                                divEstado.style.color = '#27ae60';
+                                divEstado.textContent = 'Listo. Suscrito ID: ' + id.slice(0, 8) + '...';
+                            } else {
+                                divEstado.style.color = '#2c3e50';
+                                divEstado.textContent = 'Permiso concedido. Toca el botón otra vez si no aparece el ID.';
+                            }
                         }
                     } catch (e) {
                         if (divEstado) divEstado.textContent = 'Error OneSignal: ' + (e.message || e);
