@@ -1,4 +1,6 @@
-const CACHE_NAME = 'club-otonal-v6';
+importScripts("https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js");
+
+const CACHE_NAME = 'club-otonal-v7';
 const urlsToCache = [
   './',
   './index.html',
