@@ -12,19 +12,21 @@
             try {
                 await OneSignal.init({
                     appId: "01b3d5eb-72d8-44d2-b8da-c61986cbe26a",
-                    serviceWorkerParam: { scope: "/Club-Oto-al-app/" },
-                    serviceWorkerPath: "/Club-Oto-al-app/sw.js"
+                    allowLocalhostAsSecureOrigin: true
                 });
 
                 OneSignal.User.PushSubscription.addEventListener("change", function(event) {
                     const divEstado = document.getElementById('estadoVersiculo');
                     const subId = event.current?.id || OneSignal.User.PushSubscription.id;
-                    if (divEstado && subId) {
+                    const subToken = event.current?.token || OneSignal.User.PushSubscription.token;
+                    if (divEstado && (subId || subToken)) {
                         divEstado.style.display = 'block';
                         divEstado.style.fontSize = '13px';
                         divEstado.style.marginTop = '8px';
                         divEstado.style.color = '#27ae60';
-                        divEstado.textContent = 'Listo. Suscrito ID: ' + subId.slice(0, 8) + '...';
+                        divEstado.textContent = subId
+                            ? 'Listo. Suscrito ID: ' + subId.slice(0, 8) + '...'
+                            : 'Listo. Token activo.';
                     }
                 });
             } catch (err) {
@@ -65,9 +67,6 @@
             padding: 16px;
         }
 
-        /* ----------------------------------------------------
-1. PANTALLA DE BIENVENIDA E INSTALACIÓN GUIADA
-        ---------------------------------------------------- */
         .welcome-screen {
             display: flex;
             flex-direction: column;
@@ -110,7 +109,6 @@
             margin-bottom: 20px;
         }
 
-        /* Botón principal de instalación (Verde llamativo) */
         .btn-instalar-app {
             background: linear-gradient(135deg, #27ae60, #2ecc71);
             color: white;
@@ -130,7 +128,6 @@
             margin-bottom: 12px;
         }
 
-        /* Botón para ingresar al menú sin instalar o después de instalar */
         .btn-ingresar {
             background: linear-gradient(135deg, #bc6c25, #dda15e);
             color: white;
@@ -146,7 +143,6 @@
             margin-bottom: 12px;
         }
 
-        /* Botón para activar notificaciones push */
         .btn-versiculo {
             background: linear-gradient(135deg, #2c3e50, #34495e);
             color: #ffffff;
@@ -167,7 +163,6 @@
             display: none;
         }
 
-        /* Nota de ayuda clara para encontrar la app */
         .nota-ayuda {
             font-size: 13px;
             color: #7f8c8d;
@@ -179,9 +174,6 @@
             line-height: 1.4;
         }
 
-        /* ----------------------------------------------------
-2. VISTA PRINCIPAL (BANNER Y MENÚ)
-        ---------------------------------------------------- */
         .banner-header {
             display: flex;
             align-items: center;
@@ -266,9 +258,6 @@
             color: #fcf9f5;
         }
 
-        /* ----------------------------------------------------
-3. CONTENIDO Y RESULTADOS
-        ---------------------------------------------------- */
         .content-box {
             margin-top: 10px;
             padding: 20px;
@@ -348,9 +337,6 @@
             margin-top: 6px;
         }
 
-        /* ----------------------------------------------------
-4. VISOR DE IMÁGENES
-        ---------------------------------------------------- */
         #visorModal {
             display: none;
             position: fixed;
@@ -385,9 +371,6 @@
             cursor: pointer;
         }
 
-        /* ----------------------------------------------------
-5. MODAL PERSONALIZADO DE SALIDA
-        ---------------------------------------------------- */
         #modalSalida {
             display: none;
             position: fixed;
@@ -457,7 +440,6 @@
 
     <div class="container">
 
-        <!-- 0. BIENVENIDA E INSTALACIÓN GUIADA -->
         <div id="pantallaBienvenida" class="welcome-screen">
             <img src="multimedia/imagenes/banner.jpeg" alt="Logo Club Otoñal" class="welcome-logo">
             <h1 class="welcome-title">Bienvenido</h1>
@@ -466,29 +448,24 @@
                 Un espacio dedicado a conectar, edificar y compartir la Palabra de Dios y nuestras actividades.
             </p>
 
-            <!-- Botón de instalación (Solo aparece si el navegador permite instalar) -->
             <button id="btnInstalar" class="btn-instalar-app" onclick="instalarAplicacion()">
                 📲 1. Toca aquí para instalar
             </button>
 
-            <!-- Botón para entrar al menú -->
             <button class="btn-ingresar" onclick="ingresarAlMenu()">
                 👉 2. Entrar al Menú Principal
             </button>
 
-            <!-- Botón para activar notificaciones push del versículo diario -->
             <button id="btnVersiculo" class="btn-versiculo" onclick="pedirPermisoVersiculo()">
                 🔔 Activar Versículo del Día en mi teléfono
             </button>
             <div id="estadoVersiculo" class="estado-versiculo"></div>
 
-            <!-- Nota de orientación para el usuario -->
             <div class="nota-ayuda">
                 💡 <strong>Nota:</strong> Al instalar, busca el icono con nuestro escudo en la pantalla principal o escritorio de tu teléfono para abrirla más rápido la próxima vez.
             </div>
         </div>
 
-        <!-- 1. VISTA PRINCIPAL -->
         <div id="vistaPrincipal" style="display: none;">
             <div class="banner-header" style="background-image: url('multimedia/imagenes/banner.jpeg');">
                 <div class="logo-container">
@@ -500,7 +477,6 @@
                 </div>
             </div>
 
-            <!-- Menú Principal con indicadores de toque -->
             <div id="menuPrincipal" class="menu-grid">
                 <button class="menu-btn" onclick="cargarTexto('proxima_actividad.html')">
                     📅 1. Próxima Actividad
@@ -541,20 +517,16 @@
             </div>
         </div>
 
-        <!-- 2. VISTA INTERNA -->
         <div id="resultado" class="content-box" style="display: none;"></div>
 
-        <!-- Botón Volver -->
         <button id="btnVolver" class="back-btn" onclick="mostrarMenuPrincipal()" style="display: none;">← Volver al Menú Principal</button>
     </div>
 
-    <!-- VISOR DE IMÁGENES -->
     <div id="visorModal" onclick="cerrarVisorImagen()">
         <img id="imagenAmpliada" src="" alt="Imagen Ampliada">
         <button class="cerrar-visor" onclick="cerrarVisorImagen()">✖ Cerrar Imagen</button>
     </div>
 
-    <!-- MODAL PERSONALIZADO DE SALIDA -->
     <div id="modalSalida">
         <div class="modal-salida-contenido">
             <div class="modal-salida-titulo">Club Otoñal</div>
@@ -763,7 +735,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        /* CONTROL DEFINITIVO DEL BOTÓN RETROCESO Y SALIDA */
         window.addEventListener('popstate', function () {
             if (estadoActual === 'visor') {
                 cerrarVisorImagen();
@@ -814,42 +785,49 @@
                     return;
                 }
 
-                if ('serviceWorker' in navigator) {
-                    await navigator.serviceWorker.ready;
-                }
-
                 window.OneSignalDeferred = window.OneSignalDeferred || [];
                 OneSignalDeferred.push(async function(OneSignal) {
                     try {
                         if (Notification.permission !== 'granted') {
                             await OneSignal.Notifications.requestPermission();
                         }
+
                         await OneSignal.User.PushSubscription.optIn();
 
                         let id = OneSignal.User.PushSubscription.id;
+                        let token = OneSignal.User.PushSubscription.token;
                         let intentos = 0;
 
-                        while (!id && intentos < 8) {
+                        while (!id && !token && intentos < 10) {
                             await new Promise(r => setTimeout(r, 1000));
                             id = OneSignal.User.PushSubscription.id;
+                            token = OneSignal.User.PushSubscription.token;
                             intentos++;
                         }
 
                         if (divEstado) {
-                            if (id) {
+                            if (id || token) {
                                 divEstado.style.color = '#27ae60';
-                                divEstado.textContent = 'Listo. Suscrito ID: ' + id.slice(0, 8) + '...';
+                                divEstado.textContent = id
+                                    ? 'Listo. Suscrito ID: ' + id.slice(0, 8) + '...'
+                                    : 'Listo. Token activo.';
                             } else {
-                                divEstado.style.color = '#2c3e50';
-                                divEstado.textContent = 'Permiso concedido. Toca el botón otra vez si no aparece el ID.';
+                                divEstado.style.color = '#c0392b';
+                                divEstado.textContent = 'Permiso dado, pero sin token en este dispositivo.';
                             }
                         }
                     } catch (e) {
-                        if (divEstado) divEstado.textContent = 'Error OneSignal: ' + (e.message || e);
+                        if (divEstado) {
+                            divEstado.style.color = '#c0392b';
+                            divEstado.textContent = 'Error OneSignal: ' + (e.message || e);
+                        }
                     }
                 });
             } catch (err) {
-                if (divEstado) divEstado.textContent = 'Error: ' + (err.message || err);
+                if (divEstado) {
+                    divEstado.style.color = '#c0392b';
+                    divEstado.textContent = 'Error: ' + (err.message || err);
+                }
             }
         }
     </script>
